@@ -1,6 +1,10 @@
 export interface IForm {
 	investigator: string;
 	remarks: string;
+	anguleLandmark: string;
+	state: string;
+	sampleX: string;
+	sampleY: string;
 
 	campaignName: string;
 	siteAcquisition: string;

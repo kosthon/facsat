@@ -16,3 +16,14 @@ export const OBJECT_OWNERS = [
 ];
 
 export const OBJECT_METHOD_CAPTURE = [{ value: "SNAP", label: "SNAP" }];
+
+export const OBJECT_ANGULO_LANDMARK = [
+	{ value: "-15°", label: "-15°" },
+	{ value: "0°", label: "0°" },
+	{ value: "15°", label: "15°" },
+];
+
+export const OBJECT_STATE = [
+	{ value: "Crudo", label: "Crudo" },
+	{ value: "Procesado", label: "Procesado" },
+];

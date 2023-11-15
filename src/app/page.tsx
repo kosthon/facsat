@@ -9,9 +9,11 @@ import DatePicker from "./components/DatePicker/DatePicker";
 import TextArea from "./components/TextArea/TextArea";
 import {
 	OBJECT_ANGULE_SUNPOINT,
+	OBJECT_ANGULO_LANDMARK,
 	OBJECT_CAMPAIGN_NAME,
 	OBJECT_METHOD_CAPTURE,
 	OBJECT_OWNERS,
+	OBJECT_STATE,
 } from "./constants/constants";
 import { IForm } from "./interfaces/form";
 import { formValidationSchema } from "./utils/validations/form";
@@ -19,6 +21,10 @@ import { formValidationSchema } from "./utils/validations/form";
 const initialValues: IForm = {
 	investigator: "",
 	remarks: "",
+	anguleLandmark: "",
+	state: "",
+	sampleX: "",
+	sampleY: "",
 
 	campaignName: "",
 	siteAcquisition: "",
@@ -157,6 +163,27 @@ export default function Home() {
 						/>
 
 						<CustomInput
+							label="Sample Point X:"
+							value={formik.values.sampleX}
+							name="sampleX"
+							placeholder="0,0"
+							messageError={formik.errors.sampleX}
+							isRequired
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+						/>
+						<CustomInput
+							label="Sample Point Y:"
+							value={formik.values.sampleY}
+							name="sampleY"
+							placeholder="0,0"
+							messageError={formik.errors.sampleY}
+							isRequired
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+						/>
+
+						<CustomInput
 							label="Longitud:"
 							value={formik.values.longitud}
 							name="longitud"
@@ -234,6 +261,26 @@ export default function Home() {
 							onChangeSelect={(value) => formik.setFieldValue("owner", value)}
 							options={OBJECT_OWNERS}
 							messageError={formik.errors.owner}
+							isRequired
+						/>
+
+						<CustomSelect
+							label="Angulo Landmark"
+							name="anguleLandmark"
+							onChangeSelect={(value) =>
+								formik.setFieldValue("anguleLandmark", value)
+							}
+							options={OBJECT_ANGULO_LANDMARK}
+							messageError={formik.errors.anguleLandmark}
+							isRequired
+						/>
+
+						<CustomSelect
+							label="Estado"
+							name="state"
+							onChangeSelect={(value) => formik.setFieldValue("state", value)}
+							options={OBJECT_STATE}
+							messageError={formik.errors.state}
 							isRequired
 						/>
 					</div>
