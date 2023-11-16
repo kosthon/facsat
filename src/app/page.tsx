@@ -44,10 +44,12 @@ export default function Home() {
 	const [valuesForm, setValuesForm] = useState<IForm>(initialValues);
 
 	function uploadSomething() {
-		return new Promise((resolve) => setTimeout(resolve, 60000));
+		return new Promise((resolve) => setTimeout(resolve, 1500));
 	}
 
 	const handleSubmitForm = async (data: IForm) => {
+		console.log(data);
+
 		try {
 			toast.promise(uploadSomething, {
 				success: "Información recolectada",
@@ -75,7 +77,8 @@ export default function Home() {
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues,
-		validateOnChange: false,
+		validateOnChange: true,
+		validateOnBlur: true,
 		validationSchema: formValidationSchema,
 		onSubmit: (values) => {
 			handleSubmitForm(values);
@@ -109,12 +112,12 @@ export default function Home() {
 
 						<CustomSelect
 							label="Campaign Name:"
-							name="anguloSunpoint"
+							name="campaignName"
 							onChangeSelect={(value) =>
-								formik.setFieldValue("anguleSunpoint", value)
+								formik.setFieldValue("campaignName", value)
 							}
 							options={OBJECT_CAMPAIGN_NAME}
-							messageError={formik.errors.anguleSunpoint}
+							messageError={formik.errors.campaignName}
 							isRequired
 						/>
 

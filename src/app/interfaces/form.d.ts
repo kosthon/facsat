@@ -5,8 +5,8 @@ export interface IForm {
 	state: string;
 	sampleX: string;
 	sampleY: string;
-
 	campaignName: string;
+
 	siteAcquisition: string;
 	samplePointId: string;
 	surveyId: number;

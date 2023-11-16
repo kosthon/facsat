@@ -2,6 +2,42 @@ import { Schema, model, models } from "mongoose";
 
 const dataSchema = new Schema(
 	{
+		investigator: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		remarks: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		anguleLandmark: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		state: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		sampleX: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		sampleY: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		campaignName: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+
 		siteAcquisition: {
 			type: String,
 			required: [true, "El campo es requerido"],
@@ -13,7 +49,7 @@ const dataSchema = new Schema(
 			trim: true,
 		},
 		surveyId: {
-			type: String,
+			type: Number,
 			required: [true, "El campo es requerido"],
 			trim: true,
 		},
