@@ -8,6 +8,8 @@ import {
 	TableRow,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
+import exportToExcel from "../../utils/export/excelExporter";
+
 
 export default function FormPage() {
 	const [array, setArray] = useState<string[]>([]);
@@ -33,9 +35,24 @@ export default function FormPage() {
 		}
 	};
 
+	
+
 	useEffect(() => {
 		getData();
 	}, []);
+
+	const [exported, setExported] = useState(false);
+
+	const dataToExport = [
+		...array
+	];
+  
+	const outputPath = './facsat/datos.xlsx';
+  
+	const handleExportClick = () => {
+	  exportToExcel(dataToExport, outputPath);
+	  setExported(true);
+	};
 
 	return (
 		<main className="flex min-h-screen items-center mx-auto flex-col gap-8 py-8 dark text-foreground container ">
@@ -63,6 +80,11 @@ export default function FormPage() {
 					))}
 				</TableBody>
 			</Table>
+			<div>
+				<button onClick={handleExportClick} disabled={exported}>
+					exportar a excel
+				</button>
+			</div>
 		</main>
 	);
 }
