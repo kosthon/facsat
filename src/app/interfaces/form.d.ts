@@ -1,4 +1,6 @@
 export interface IForm {
+	_id?: number;
+
 	investigator: string;
 	remarks: string;
 	anguleLandmark: string;
