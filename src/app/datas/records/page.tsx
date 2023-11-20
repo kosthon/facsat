@@ -6,7 +6,6 @@ import {
 	TableColumn,
 	TableHeader,
 	TableRow,
-	getKeyValue,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import exportToExcel from "../../utils/export/excelExporter";
@@ -37,7 +36,9 @@ const initialValues: IForm = {
 
 export default function FormPage() {
 	const [array, setArray] = useState<IForm[]>([]);
-	const [selectionBehavior, setSelectionBehavior] = React.useState("replace");
+	const [selectionBehavior, setSelectionBehavior] = React.useState<
+		"toggle" | "replace" | undefined
+	>("toggle");
 
 	const getData = async () => {
 		try {
@@ -65,18 +66,26 @@ export default function FormPage() {
 
 	const [exported, setExported] = useState(false);
 
-	const dataToExport = [...array];
-
 	const outputPath = "./facsat/datos.xlsx";
 
 	const handleExportClick = () => {
-		exportToExcel(dataToExport, outputPath);
+		exportToExcel(array, outputPath);
 		setExported(true);
 	};
 
 	return (
 		<main className="flex min-h-screen items-center mx-auto flex-col gap-8 py-8 dark text-foreground container ">
-			<Table>
+			<Table
+				selectionBehavior={selectionBehavior}
+				onRowAction={(key) => {
+					const selectedItem = array.find((item) => item._id === key);
+					if (selectedItem) {
+						alert(
+							`Opening item - Sample Point ID: ${selectedItem.samplePointId}, Survey ID: ${selectedItem.surveyId}, Operador: ${selectedItem.operator}`,
+						);
+					}
+				}}
+			>
 				<TableHeader>
 					<TableColumn>Sample Point ID</TableColumn>
 					<TableColumn>Survey ID</TableColumn>
@@ -89,36 +98,15 @@ export default function FormPage() {
 				<TableBody items={array.reverse()}>
 					{(item) => (
 						<TableRow key={item._id}>
-							{(columnKey) => (
-								<TableCell>{getKeyValue(item, columnKey)}</TableCell>
-							)}
+							<TableCell>{item.samplePointId}</TableCell>
+							<TableCell>{item.surveyId}</TableCell>
+							<TableCell>{item.siteAcquisition}</TableCell>
+							<TableCell>{item.longitud}</TableCell>
+							<TableCell>{item.latitud}</TableCell>
+							<TableCell>{item.dateAcquisition}</TableCell>
+							<TableCell>{item.operator}</TableCell>
 						</TableRow>
 					)}
-					{/* {array.reverse().map((item) => (
-						<TableRow key={item._id}>
-							<TableCell>
-								{typeof window !== "undefined" ? item.samplePointId : ""}{" "}
-							</TableCell>
-							<TableCell>
-								{typeof window !== "undefined" ? item.surveyId : ""}
-							</TableCell>
-							<TableCell>
-								{typeof window !== "undefined" ? item.siteAcquisition : ""}
-							</TableCell>
-							<TableCell>
-								{typeof window !== "undefined" ? item.longitud : ""}
-							</TableCell>
-							<TableCell>
-								{typeof window !== "undefined" ? item.latitud : ""}
-							</TableCell>
-							<TableCell>
-								{typeof window !== "undefined" ? item.dateAcquisition : ""}
-							</TableCell>
-							<TableCell>
-								{typeof window !== "undefined" ? item.operator : ""}
-							</TableCell>
-						</TableRow>
-					))} */}
 				</TableBody>
 			</Table>
 			<div>
