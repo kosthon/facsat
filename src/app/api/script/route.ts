@@ -1,41 +1,35 @@
-import Data from "@/app/models/Data";
+import { JSDOM } from "jsdom";
 import { NextResponse } from "next/server";
 
-export async function POST(
-	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
-	req: any,
-) {
+// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+export async function POST(request: any) {
 	try {
-		const data = await req.json();
-		const newData = new Data(data);
-		const savedData = await newData.save();
-		console.log(data);
+		const response = await fetch(
+			"https://www.windy.com/es/-Temperatura-temp?temp",
+		);
+		if (response.status !== 200) {
+			throw new Error(
+				`Error al obtener la página. Código de estado: ${response.status}`,
+			);
+		}
+		const html = await response.text();
+		const dom = new JSDOM(html);
+		const windyWeb = dom.window.document;
+		const inputWindy = windyWeb.querySelector<HTMLInputElement>("#q") || null;
 
-		const { spawn } = require("child_process");
-		const pythonProcess = spawn("python", [
-			"app/scripts/etl.py",
-			JSON.stringify(data),
-		]);
-
-		let scriptOutput = "";
-
-		pythonProcess.stdout.on("data", (data: Buffer) => {
-			scriptOutput += data.toString();
-		});
-
-		pythonProcess.on("close", (code: number) => {
-			if (code === 0) {
-				NextResponse.json("Script ejecutado exitosamente", savedData);
-			} else {
-				NextResponse.json("Ocurrió un error al ejecutar el script", {
-					status: 500,
-				});
-			}
-		});
-	} catch (error) {
-		console.error("Error al ejecutar el script:", error);
-		NextResponse.json("Ocurrió un error al ejecutar el script", {
-			status: 500,
+		if (inputWindy) {
+			inputWindy.value = "123";
+			const enterEvent = new dom.window.KeyboardEvent("keydown", {
+				key: "Enter",
+			});
+			inputWindy.dispatchEvent(enterEvent);
+		}
+		return NextResponse.json({ inputWindy }, { status: 200 });
+		// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+	} catch (err: any) {
+		console.log(err);
+		return NextResponse.json(err.message, {
+			status: 400,
 		});
 	}
 }

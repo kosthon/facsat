@@ -47,6 +47,27 @@ export default function Home() {
 		return new Promise((resolve) => setTimeout(resolve, 1500));
 	}
 
+	const getDownloads = async () => {
+		try {
+			console.log("success");
+			const res = await fetch("/api/script", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			if (!res.ok) {
+				throw new Error(`Request failed with status: ${res.status}`);
+			}
+
+			const data = await res.json();
+			console.log(data);
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+	};
+
 	const handleSubmitForm = async (data: IForm) => {
 		console.log(data);
 
@@ -290,9 +311,7 @@ export default function Home() {
 
 					<Button
 						color="primary"
-						onPress={() => {
-							formik.handleSubmit();
-						}}
+						onPress={getDownloads}
 						className="flex justify-center mx-auto mt-4"
 					>
 						Enviar
