@@ -48,10 +48,15 @@ export default function Home() {
 	}
 
 	const getDownloads = async () => {
+		console.log(formik.values.longitud, formik.values.latitud);
+
 		try {
-			console.log("success");
 			const res = await fetch("/api/script", {
 				method: "POST",
+				body: JSON.stringify({
+					longitud: formik.values.longitud,
+					latitud: formik.values.latitud,
+				}),
 				headers: {
 					"Content-Type": "application/json",
 				},

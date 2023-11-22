@@ -30,8 +30,6 @@ export const formValidationSchema = Yup.object().shape({
 	longitud: Yup.number()
 		.typeError("El valor debe ser un número")
 		.required("El campo longitud es requerido")
-		.min(0.1)
-		.max(1000)
 		.test("is-decimal", "Debe ser un valor decimal", (value) => {
 			if (value === undefined || value === null) return true; // Allow empty values
 			return /^[0-9]*\.{1}[0-9]+$/.test(value.toString());
@@ -39,7 +37,6 @@ export const formValidationSchema = Yup.object().shape({
 	latitud: Yup.number()
 		.typeError("El valor debe ser un número")
 		.required("El campo latitud es requerido")
-		.min(2, "El campo no puede ser menor a 2 caracteres")
 		.test("is-decimal", "Debe ser un valor decimal", (value) => {
 			if (value === undefined || value === null) return true; // Allow empty values
 			return /^[0-9]*\.{1}[0-9]+$/.test(value.toString());
