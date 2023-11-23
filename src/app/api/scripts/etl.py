@@ -34,9 +34,10 @@ driver = webdriver.Chrome(options=options)
 
 driver.get('https://www.windy.com/es/-Temperatura-temp?temp')
 
-# Digitar coordenadas
-latitud = '123.0112'
-longitud = '110.1234'
+
+5.934299471956952, -73.61576533067957
+latitud = '5.934299471956952'
+longitud = '-73.61576533067957'
 
 # Esperar a que el elemento sea clickable
 textarea = WebDriverWait(driver, 10).until(
