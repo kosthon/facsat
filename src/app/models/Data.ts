@@ -2,6 +2,7 @@ import { Schema, model, models } from "mongoose";
 
 const dataSchema = new Schema(
 	{
+		// DATA FROM FORM
 		investigator: {
 			type: String,
 			required: [true, "El campo es requerido"],
@@ -37,7 +38,6 @@ const dataSchema = new Schema(
 			required: [true, "El campo es requerido"],
 			trim: true,
 		},
-
 		siteAcquisition: {
 			type: String,
 			required: [true, "El campo es requerido"],
@@ -90,6 +90,52 @@ const dataSchema = new Schema(
 		},
 		owner: {
 			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		// DATA FROM WEB SCRAPPING
+		id: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		temperature: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		pressure: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		localTime: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		julianTime: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		utcTime: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		altitude: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		elevation: {
+			type: String,
+			required: [true, "El campo es requerido"],
+			trim: true,
+		},
+		TLE: {
+			type: Object,
 			required: [true, "El campo es requerido"],
 			trim: true,
 		},

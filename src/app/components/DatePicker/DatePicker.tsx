@@ -1,16 +1,19 @@
+import { FormikErrors } from "formik";
 import { ChangeEvent, FocusEvent, useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 
 interface DatePickerProps {
 	label: string;
-	value?: string;
+	value?: string | Date;
 	name: string;
-	messageError?: string | undefined | false;
+	messageError?: string | FormikErrors<Date>;
 	isRequired: boolean;
 	onChangeText?: (text: string) => void;
 	onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
 	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
+
+// ...
 
 export const DatePicker = ({
 	label,
@@ -29,9 +32,6 @@ export const DatePicker = ({
 
 	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const handleValueChange = (newValue: any) => {
-		console.log("newValue:", newValue);
-
-		// Actualiza el estado local y notifica a la función onChange si se proporciona.
 		setValueInput(newValue);
 		if (onChange) {
 			onChange({
@@ -55,9 +55,13 @@ export const DatePicker = ({
 					messageError ? "border-red-500" : ""
 				}  focus:border-[#0EA5E9] focus:border-1`}
 			/>
-			{messageError && <p className="text-xs text-red-500">{messageError}</p>}
+			{messageError && typeof messageError === "string" && (
+				<p className="text-xs text-red-500">{messageError}</p>
+			)}
 		</div>
 	);
 };
+
+// ...
 
 export default DatePicker;

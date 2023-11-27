@@ -9,18 +9,23 @@ interface CustomSelectProps {
 	isRequired: boolean;
 	onChangeSelect?: (value: string) => void;
 	onBlur?: (e: FocusEvent<HTMLSelectElement>) => void;
+	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+	formikValues: Record<string, any>;
 }
 
 export const CustomSelect = ({
 	label,
-	value,
 	name,
 	options,
 	messageError,
 	isRequired = true,
 	onChangeSelect,
 	onBlur,
+	formikValues, // Recibe formik.values como prop
 }: CustomSelectProps) => {
+	// Usa formikValues.campaignName en lugar de formik.values.campaignName
+	const selectedValue = formikValues[name];
+
 	const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		if (onChangeSelect) {
 			onChangeSelect(e.target.value);
@@ -37,7 +42,7 @@ export const CustomSelect = ({
 					messageError ? "border-red-500" : ""
 				} focus:border-[#0EA5E9] focus:border-1`}
 				name={name}
-				value={value}
+				value={selectedValue}
 				onChange={handleChange}
 				onBlur={onBlur}
 			>

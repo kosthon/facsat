@@ -9,6 +9,7 @@ import uuid
 
 import pandas as pd
 import pyautogui
+import pygetwindow as gw
 import skyfield.api
 import skyfield.elementslib
 from selenium import webdriver
@@ -35,8 +36,8 @@ driver = webdriver.Chrome(options=options)
 driver.get('https://www.windy.com/es/-Temperatura-temp?temp')
 
 
-latitud = '5.934299471956952'
-longitud = '-73.61576533067957'
+latitud = sys.argv[1]
+longitud = sys.argv[2]
 
 # Esperar a que el elemento sea clickable
 textarea = WebDriverWait(driver, 10).until(
@@ -247,7 +248,7 @@ time.sleep(5)
 
 # EXPORTACIÓN DE DATA A ARCHIVOS EXCEL
 # Ruta del archivo
-ruta_archivo = "datos.csv"
+ruta_archivo = "public/results/datos.csv"
 # Crear una lista con los elementos individuales a escribir en cada columna
 fila = [numberGrades, numberPresion, textoCelastrak,
         horaLocal, hora_juliana, horaUTC, altitud, elevation]
@@ -261,7 +262,7 @@ print("Datos guardados en el archivo:", ruta_archivo)
 
 
 # EXPORTACIÓN DE DATA A ARCHIVOS JSON
-ruta_archivojson = "datos.json"
+ruta_archivojson = "public/results/datos.json"
 # Crear un diccionario con los datos de la consulta actual
 consulta_actual = {
     "id": str(uuid.uuid4()),  # Generar un identificador único
@@ -318,12 +319,9 @@ geojson = {
 }
 
 # Guardar información en archivo GeoJSON
-ruta_geojson = 'datos.geojson'
+ruta_geojson = 'public/results/datos.geojson'
 with open(ruta_geojson, 'w') as archivo_geojson:
     json.dump(geojson, archivo_geojson)
 print("Datos guardados en el archivo GeoJSON:", ruta_geojson)
 
 time.sleep(5)
-
-
-# 5.934299471956952, -73.61576533067957

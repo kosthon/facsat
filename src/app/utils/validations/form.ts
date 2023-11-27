@@ -44,9 +44,7 @@ export const formValidationSchema = Yup.object().shape({
 	anguleSunpoint: Yup.string()
 		.required("El campo es requerido")
 		.min(2, "El campo no puede ser menor a 2 caracteres"),
-	dateAcquisition: Yup.date()
-		.required("El campo es requerido")
-		.min(2, "El campo no puede ser menor a 2 caracteres"),
+	dateAcquisition: Yup.date().required("El campo es requerido"),
 	captureMethod: Yup.string()
 		.required("El campo es requerido")
 		.min(2, "El campo no puede ser menor a 2 caracteres"),
