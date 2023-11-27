@@ -1,6 +1,6 @@
 import { execSync } from "child_process";
 import { NextResponse } from "next/server";
-import path from "path";
+import * as path from "path";
 
 export async function POST(request: Request) {
 	const { longitud, latitud } = await request.json();
@@ -10,12 +10,14 @@ export async function POST(request: Request) {
 		return NextResponse.json("Por favor proporcione una búsqueda");
 	}
 
-	// Ajusta la ruta relativa según tu estructura de carpetas
-	const scriptPath = path.join(__dirname, "..", "api", "scripts", "etl.py");
-	const normalizedScriptPath = scriptPath.replace(/\\/g, "/"); // Asegura compatibilidad con todos los sistemas
+	// Obtener la ruta del directorio del script de Node.js
+	const scriptDir = path.resolve(process.cwd(), "src/app/api/scripts");
+
+	// Construir la ruta al script de Python usando una ruta relativa
+	const scriptPath = path.join(scriptDir, "etl.py");
 
 	try {
-		execSync(`python ${normalizedScriptPath} ${longitud} ${latitud}`);
+		execSync(`python ${scriptPath} ${longitud} ${latitud}`);
 		return NextResponse.json({ success: true }, { status: 200 });
 	} catch (error) {
 		console.error("Error en la función POST:", error);
