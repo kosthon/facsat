@@ -1,0 +1,16 @@
+version: "2023.11.23"
+services:
+  front_end:
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - back_end
+  back_end:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:
