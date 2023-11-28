@@ -64,7 +64,8 @@ export default function Home() {
 
 	const sendDataRequest = async (data: IForm) => {
 		try {
-			const scriptResult = await toast.promise(
+			console.log('INICIO DE SCRIPT');
+			const scriptResult =  toast.promise(
 				async () => {
 					return executeScript(data);
 				},
@@ -77,6 +78,8 @@ export default function Home() {
 					},
 				},
 			);
+			console.log('SCRIPT FINALIZADO');
+			console.log('INICIO DE PETICION GUARDAR DATOS');
 			const dataResponse = await fetch("/api/data", {
 				method: "POST",
 				body: JSON.stringify({ ...data, scriptResult }),
@@ -198,7 +201,7 @@ export default function Home() {
 							label="Sample Point X:"
 							value={formik.values.sampleX}
 							name="sampleX"
-							placeholder="0,0"
+							placeholder="0.0"
 							messageError={formik.errors.sampleX}
 							isRequired
 							onChange={formik.handleChange}
@@ -208,7 +211,7 @@ export default function Home() {
 							label="Sample Point Y:"
 							value={formik.values.sampleY}
 							name="sampleY"
-							placeholder="0,0"
+							placeholder="0.0"
 							messageError={formik.errors.sampleY}
 							isRequired
 							onChange={formik.handleChange}
@@ -219,7 +222,7 @@ export default function Home() {
 							label="Longitud:"
 							value={formik.values.longitud}
 							name="longitud"
-							placeholder="112.97 W"
+							placeholder="112.97 "
 							messageError={formik.errors.longitud}
 							isRequired
 							onChange={formik.handleChange}
@@ -229,7 +232,7 @@ export default function Home() {
 							label="Latitud:"
 							value={formik.values.latitud}
 							name="latitud"
-							placeholder="40.94 N "
+							placeholder="40.94"
 							messageError={formik.errors.latitud}
 							isRequired
 							onChange={formik.handleChange}
@@ -324,7 +327,7 @@ export default function Home() {
 
 					<Button
 						color="primary"
-						onPress={() => sendDataRequest(formik.values)} // Llama a la función y pasa los valores del formulario
+						onPress={() => sendDataRequest(formik.values)} 
 						className="flex justify-center mx-auto mt-4"
 					>
 						Enviar
