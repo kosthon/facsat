@@ -6,7 +6,10 @@ import * as path from "path";
 export async function POST(request: Request) {
 	const { longitud, latitud } = await request.json();
 	if (!longitud || !latitud) {
-		return NextResponse.json("Por favor proporcione una búsqueda");
+		return NextResponse.json(
+			{ error: "Por favor proporcione parametros de busqueda" },
+			{ status: 400 },
+		);
 	}
 
 	// Obtener la ruta del directorio del script de Node.js
@@ -25,7 +28,12 @@ export async function POST(request: Request) {
 		const resultadosJSON = await fs.readFile(resultadosPath, "utf-8");
 		const resultados = JSON.parse(resultadosJSON);
 
-		return NextResponse.json({ success: true, resultados }, { status: 200 });
+		const ultimoResultado = resultados[resultados.length - 1];
+
+		return NextResponse.json(
+			{ success: true, ultimoResultado },
+			{ status: 200 },
+		);
 	} catch (error) {
 		console.error("Error en la función POST:", error);
 		return NextResponse.json({ error: "Hubo un error" }, { status: 500 });

@@ -266,8 +266,8 @@ ruta_archivojson = "public/results/datos.json"
 # Crear un diccionario con los datos de la consulta actual
 consulta_actual = {
     "id": str(uuid.uuid4()),  # Generar un identificador único
-    "latitude": latitud,
-    "longitude": longitud,
+    "latitud": latitud,
+    "longitud": longitud,
     "temperature": numberGrades,
     "pressure": numberPresion,
     "localTime": horaLocal,
