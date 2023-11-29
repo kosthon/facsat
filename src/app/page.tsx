@@ -43,60 +43,74 @@ const initialValues: IForm = {
 export default function Home() {
 	const [valuesForm, setValuesForm] = useState<IForm>(initialValues);
 
-	function uploadSomething() {
-		return new Promise((resolve) => setTimeout(resolve, 1500));
-	}
-
-	const getDownloads = async () => {
-		console.log(formik.values.longitud, formik.values.latitud);
-
-		try {
-			const res = await fetch("/api/script", {
-				method: "POST",
-				body: JSON.stringify({
-					longitud: formik.values.longitud,
-					latitud: formik.values.latitud,
-				}),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			});
-
-			if (!res.ok) {
-				throw new Error(`Request failed with status: ${res.status}`);
-			}
-
-			const data = await res.json();
-			console.log(data);
-		} catch (error) {
-			console.error("Error fetching data:", error);
+	const executeScript = async (data: IForm) => {
+		const scriptResponse = await fetch("/api/script", {
+			method: "POST",
+			body: JSON.stringify({
+				longitud: data.longitud,
+				latitud: data.latitud,
+			}),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		if (!scriptResponse.ok) {
+			throw new Error(`Error: ${scriptResponse.status}`);
 		}
+		console.log("respuesta de la peticion en la funcion: ", scriptResponse);
+		return scriptResponse.json();
 	};
 
-	const handleSubmitForm = async (data: IForm) => {
-		console.log(data);
-
+	const sendDataRequest = async (data: IForm) => {
 		try {
-			toast.promise(uploadSomething, {
-				success: "Información recolectada",
-				loading: "Ejecutando Script para obtención de data",
-				error: "Ocurrió un error!",
-			});
-			const res = await fetch("/api/data", {
-				method: "POST",
-				body: JSON.stringify(data),
-				headers: {
-					"Content-Type": "application/json",
+			formik.validateForm(data);
+			console.log("INICIO DE SCRIPT");
+			let scriptResult;
+
+			await toast.promise(
+				async () => {
+					scriptResult = await executeScript(data);
+					console.log("RESPONSE PETICION: ", scriptResult);
+					if (scriptResult.success) {
+						console.log("INICIO DE PETICION GUARDAR DATOS");
+						const lastRegister = scriptResult.ultimoResultado;
+						console.log(data);
+						console.log("DATA POR ENVIAR", { ...data, lastRegister });
+
+						const dataResponse = await fetch("/api/data", {
+							method: "POST",
+							body: JSON.stringify({
+								...data,
+								temperature: lastRegister.temperature,
+								pressure: lastRegister.pressure,
+								localTime: lastRegister.localTime,
+								julianTime: lastRegister.julianTime,
+								utcTime: lastRegister.utcTime,
+								altitude: lastRegister.altitude,
+								elevation: lastRegister.elevation,
+								TLE: lastRegister.TLE,
+							}),
+							headers: {
+								"Content-Type": "application/json",
+							},
+						});
+						const responseData = await dataResponse.json();
+						formik.setValues(initialValues);
+						return responseData;
+					}
 				},
-			});
-			if (!res.ok) {
-				throw new Error("Error al enviar la solicitud");
-			} else {
-				formik.setValues(initialValues);
-			}
+				{
+					loading: "Ejecutando Script para obtención de data",
+					success: "Script ejecutado correctamente",
+					error: (error) => {
+						console.error("Error durante la ejecución del script:", error);
+						return "Ocurrió un error al ejecutar el script";
+					},
+				},
+			);
 		} catch (error) {
 			console.error("Error durante la solicitud:", error);
-			toast.error("Ocurrió un error al enviar la solicitud");
+			throw error;
 		}
 	};
 
@@ -107,7 +121,7 @@ export default function Home() {
 		validateOnBlur: true,
 		validationSchema: formValidationSchema,
 		onSubmit: (values) => {
-			handleSubmitForm(values);
+			sendDataRequest(values);
 		},
 	});
 
@@ -139,6 +153,7 @@ export default function Home() {
 						<CustomSelect
 							label="Campaign Name:"
 							name="campaignName"
+							formikValues={formik.values}
 							onChangeSelect={(value) =>
 								formik.setFieldValue("campaignName", value)
 							}
@@ -195,7 +210,7 @@ export default function Home() {
 							label="Sample Point X:"
 							value={formik.values.sampleX}
 							name="sampleX"
-							placeholder="0,0"
+							placeholder="0.0"
 							messageError={formik.errors.sampleX}
 							isRequired
 							onChange={formik.handleChange}
@@ -205,7 +220,7 @@ export default function Home() {
 							label="Sample Point Y:"
 							value={formik.values.sampleY}
 							name="sampleY"
-							placeholder="0,0"
+							placeholder="0.0"
 							messageError={formik.errors.sampleY}
 							isRequired
 							onChange={formik.handleChange}
@@ -216,7 +231,7 @@ export default function Home() {
 							label="Longitud:"
 							value={formik.values.longitud}
 							name="longitud"
-							placeholder="112.97 W"
+							placeholder="112.97 "
 							messageError={formik.errors.longitud}
 							isRequired
 							onChange={formik.handleChange}
@@ -226,7 +241,7 @@ export default function Home() {
 							label="Latitud:"
 							value={formik.values.latitud}
 							name="latitud"
-							placeholder="40.94 N "
+							placeholder="40.94"
 							messageError={formik.errors.latitud}
 							isRequired
 							onChange={formik.handleChange}
@@ -234,7 +249,8 @@ export default function Home() {
 						/>
 						<CustomSelect
 							label="Angulo de sunpoint:"
-							name="anguloSunpoint"
+							name="anguleSunpoint"
+							formikValues={formik.values}
 							onChangeSelect={(value) =>
 								formik.setFieldValue("anguleSunpoint", value)
 							}
@@ -255,6 +271,7 @@ export default function Home() {
 						<CustomSelect
 							label="Método de captura:"
 							name="captureMethod"
+							formikValues={formik.values}
 							onChangeSelect={(value) =>
 								formik.setFieldValue("captureMethod", value)
 							}
@@ -287,6 +304,7 @@ export default function Home() {
 						<CustomSelect
 							label="Propietario"
 							name="owner"
+							formikValues={formik.values}
 							onChangeSelect={(value) => formik.setFieldValue("owner", value)}
 							options={OBJECT_OWNERS}
 							messageError={formik.errors.owner}
@@ -296,6 +314,7 @@ export default function Home() {
 						<CustomSelect
 							label="Angulo Landmark"
 							name="anguleLandmark"
+							formikValues={formik.values}
 							onChangeSelect={(value) =>
 								formik.setFieldValue("anguleLandmark", value)
 							}
@@ -307,6 +326,7 @@ export default function Home() {
 						<CustomSelect
 							label="Estado"
 							name="state"
+							formikValues={formik.values}
 							onChangeSelect={(value) => formik.setFieldValue("state", value)}
 							options={OBJECT_STATE}
 							messageError={formik.errors.state}
@@ -316,7 +336,7 @@ export default function Home() {
 
 					<Button
 						color="primary"
-						onPress={getDownloads}
+						onPress={() => sendDataRequest(formik.values)}
 						className="flex justify-center mx-auto mt-4"
 					>
 						Enviar
