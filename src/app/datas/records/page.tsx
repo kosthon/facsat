@@ -1,5 +1,7 @@
 "use client";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import InsertPageBreakRoundedIcon from "@mui/icons-material/InsertPageBreakRounded";
+import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import {
 	Button,
 	Chip,
@@ -15,12 +17,14 @@ import {
 	TableColumn,
 	TableHeader,
 	TableRow,
+	Tooltip,
 	User,
 	useDisclosure,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import exportToExcel from "../../utils/export/excelExporter";
 
+import { toast } from "sonner";
 import { IForm } from "../../interfaces/form";
 
 const initialValues: IForm = {
@@ -89,6 +93,27 @@ export default function FormPage() {
 			setArray(data);
 		} catch (error) {
 			console.error("Error fetching data:", error);
+		}
+	};
+
+	const handleDeleteItem = async (itemId: string) => {
+		try {
+			const response = await fetch(`/api/data/${itemId}`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error(`Error: ${response.status}`);
+			}
+
+			getData(); // Asegúrate de definir la función getData para actualizar la lista
+			toast.success("Registro eliminado correctamente");
+		} catch (error) {
+			console.error("Error al eliminar el registro:", error);
+			toast.error("Error al eliminar el registro");
 		}
 	};
 
@@ -163,12 +188,12 @@ export default function FormPage() {
 
 			<Table
 				selectionBehavior={selectionBehavior}
-				onRowAction={(key) => {
-					const selectedItem = array.find((item) => item._id === key);
-					if (selectedItem) {
-						handleOpen("blur", selectedItem); // Puedes ajustar el tipo de fondo según tus necesidades
-					}
-				}}
+				// onRowAction={(key) => {
+				// 	const selectedItem = array.find((item) => item._id === key);
+				// 	if (selectedItem) {
+				// 		handleOpen("blur", selectedItem); // Puedes ajustar el tipo de fondo según tus necesidades
+				// 	}
+				// }}
 			>
 				<TableHeader>
 					<TableColumn>Investigador</TableColumn>
@@ -177,13 +202,14 @@ export default function FormPage() {
 					<TableColumn>Survey ID</TableColumn>
 					<TableColumn>Fecha de adquisición</TableColumn>
 					<TableColumn>Estado</TableColumn>
+					<TableColumn>Acciones</TableColumn>
 				</TableHeader>
 				<TableBody
 					items={array.slice().reverse()}
 					emptyContent={"No hay data por mostrar."}
 				>
 					{(item) => (
-						<TableRow key={item._id} className="cursor-pointer">
+						<TableRow key={item._id} className="cursor-auto">
 							<TableCell>
 								<User
 									name={item.investigator}
@@ -206,10 +232,33 @@ export default function FormPage() {
 								<Chip
 									size="sm"
 									variant="flat"
-									color={statusColor[item.state] || "default"} // Utiliza el color asociado o "default" si no hay coincidencia
+									color={statusColor[item.state] || "default"}
 								>
 									{item.state}
 								</Chip>
+							</TableCell>
+							<TableCell>
+								<div className="relative flex items-center gap-2">
+									<Tooltip color="primary" content="Detalles">
+										{/* rome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+										<span
+											onClick={() => handleOpen("blur", item)}
+											className="text-lg text-default-400 cursor-pointer active:opacity-50"
+										>
+											<RemoveRedEyeRoundedIcon />
+										</span>
+									</Tooltip>
+									<Tooltip color="danger" content="Eliminar registro">
+										{/* rome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+										<span
+											className="text-lg text-danger cursor-pointer active:opacity-50"
+											onClick={() => handleDeleteItem(item?._id || "")}
+											// Utiliza item?._id para acceder a item._id solo si item no es undefined
+										>
+											<DeleteOutlineRoundedIcon />
+										</span>
+									</Tooltip>
+								</div>
 							</TableCell>
 						</TableRow>
 					)}
