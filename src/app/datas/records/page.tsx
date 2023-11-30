@@ -141,7 +141,7 @@ export default function FormPage() {
 					onClose();
 					setSelectedItem(null);
 				}}
-				size="2xl"
+				size="3xl"
 				classNames={{
 					body: "py-6",
 					backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
@@ -161,11 +161,173 @@ export default function FormPage() {
 							<ModalBody>
 								{selectedItem && (
 									<>
-										<small>Investigador</small>
-										<p>{selectedItem.investigator}</p>
-										<p>Sample Point ID: {selectedItem.samplePointId}</p>
-										<p>Survey ID: {selectedItem.surveyId}</p>
-										<p>Operador: {selectedItem.operator}</p>
+										<div className="grid gap-4 grid-cols-2">
+											<div>
+												<small className="underline decoration-sky-500 leading-none">
+													Investigador:
+												</small>
+												<p className="leading-none">
+													{selectedItem.investigator}
+												</p>
+											</div>
+											<div className="grid gap-2 grid-cols-2">
+												<div>
+													<small className="underline decoration-sky-500 leading-none">
+														Propietario:
+													</small>
+													<p className=" leading-none">{selectedItem.owner}</p>
+												</div>
+												<div>
+													<small className="underline decoration-sky-500 leading-none">
+														Operador:
+													</small>
+													<p className=" leading-none">
+														{selectedItem.operator}
+													</p>
+												</div>
+											</div>
+										</div>
+										<div className="grid grid-cols-1">
+											<small className="underline decoration-sky-500 leading-none">
+												Observaciones:
+											</small>
+											<p className=" leading-none">{selectedItem.remarks}</p>
+										</div>
+										<div className="grid gap-4 grid-cols-2">
+											<div>
+												<small className="underline decoration-sky-500 leading-none">
+													Sample X / Sample Y:
+												</small>
+												<p className=" leading-none">
+													({selectedItem.sampleX}, {selectedItem.sampleY})
+												</p>
+											</div>
+											<div>
+												<small className="underline decoration-sky-500 leading-none">
+													Nombre de la campaña:
+												</small>
+												<p className=" leading-none">
+													{selectedItem.campaignName}
+												</p>
+											</div>
+										</div>
+										<div className="grid gap-4 grid-cols-2">
+											<div className="grid gap-2 grid-cols-2">
+												<div>
+													<small className="underline decoration-sky-500 leading-none">
+														Survey ID:
+													</small>
+													<p className=" leading-none">
+														{selectedItem.surveyId}
+													</p>
+												</div>
+												<div>
+													<small className="underline decoration-sky-500 leading-none">
+														Sample point ID:
+													</small>
+													<p className=" leading-none">
+														{selectedItem.samplePointId}
+													</p>
+												</div>
+											</div>
+											<div>
+												<small className="underline decoration-sky-500 leading-none">
+													Fecha de adquisición:
+												</small>
+												<p className=" leading-none">
+													{selectedItem.dateAcquisition}
+												</p>
+											</div>
+										</div>
+										<div className="grid gap-4 grid-cols-2">
+											<div>
+												<small className="underline decoration-sky-500 leading-none">
+													Metodo de captura:
+												</small>
+												<p className=" leading-none">
+													{selectedItem.captureMethod}
+												</p>
+											</div>
+											<div>
+												<small className="underline decoration-sky-500 leading-none">
+													Parametros de adquisición:
+												</small>
+												<p className=" leading-none">
+													{selectedItem.parametersAcquisition}
+												</p>
+											</div>
+										</div>
+										<div className="grid gap-4 grid-cols-2">
+											<div>
+												<small className="underline decoration-sky-500 leading-none">
+													Hora local:
+												</small>
+												<p className=" leading-none">
+													{selectedItem.localTime}
+												</p>
+											</div>
+											<div className="grid gap-2 grid-cols-2">
+												<div>
+													<small className="underline decoration-sky-500 leading-none">
+														Hora Juliana:
+													</small>
+													<p className=" leading-none">
+														{selectedItem.julianTime}
+													</p>
+												</div>
+												<div>
+													<small className="underline decoration-sky-500 leading-none">
+														Hora UTC:
+													</small>
+													<p className=" leading-none">
+														{selectedItem.utcTime}
+													</p>
+												</div>
+											</div>
+										</div>
+										<div className="grid gap-4 grid-cols-2">
+											<div className="grid gap-2 grid-cols-2">
+												<div>
+													<small className="underline decoration-sky-500 leading-none">
+														Temperatura:
+													</small>
+													<p className=" leading-none">
+														{selectedItem.temperature}°C
+													</p>
+												</div>
+												<div>
+													<small className="underline decoration-sky-500 leading-none">
+														Presión:
+													</small>
+													<p className=" leading-none">
+														{selectedItem.pressure} hPa
+													</p>
+												</div>
+											</div>
+											<div className="grid gap-2 grid-cols-2">
+												<div>
+													<small className="underline decoration-sky-500 leading-none">
+														Altitud:
+													</small>
+													<p className=" leading-none">
+														{selectedItem.altitude}
+													</p>
+												</div>
+												<div>
+													<small className="underline decoration-sky-500 leading-none">
+														Elevación:
+													</small>
+													<p className=" leading-none">
+														{selectedItem.elevation}
+													</p>
+												</div>
+											</div>
+											<div className="grid grid-cols-1">
+												<small className="underline decoration-sky-500 leading-none">
+													TLE:
+												</small>
+											</div>
+										</div>
 									</>
 								)}
 							</ModalBody>
