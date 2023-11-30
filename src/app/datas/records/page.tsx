@@ -1,5 +1,4 @@
 "use client";
-import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import InsertPageBreakRoundedIcon from "@mui/icons-material/InsertPageBreakRounded";
 import RemoveRedEyeRoundedIcon from "@mui/icons-material/RemoveRedEyeRounded";
 import {
@@ -96,7 +95,10 @@ export default function FormPage() {
 		}
 	};
 
-	const handleDeleteItem = async (itemId: string) => {
+	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
+	const handleDeleteItem = async (itemId: any) => {
+		console.log(itemId);
+
 		try {
 			const response = await fetch(`/api/data/${itemId}`, {
 				method: "DELETE",
@@ -248,16 +250,15 @@ export default function FormPage() {
 											<RemoveRedEyeRoundedIcon />
 										</span>
 									</Tooltip>
-									<Tooltip color="danger" content="Eliminar registro">
-										{/* rome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+									{/* <Tooltip color="danger" content="Eliminar registro">
 										<span
 											className="text-lg text-danger cursor-pointer active:opacity-50"
-											onClick={() => handleDeleteItem(item?._id || "")}
+											onClick={() => handleDeleteItem(item._id)}
 											// Utiliza item?._id para acceder a item._id solo si item no es undefined
 										>
 											<DeleteOutlineRoundedIcon />
 										</span>
-									</Tooltip>
+									</Tooltip> */}
 								</div>
 							</TableCell>
 						</TableRow>

@@ -32,16 +32,16 @@ export async function POST(request: any) {
 export async function DELETE(request: any) {
 	try {
 		connectDB();
-		const { id } = request.query;
+		const { _id } = request.query;
 
-		if (!id) {
+		if (!_id) {
 			return NextResponse.json(
 				{ error: "Se requiere el parámetro 'id'." },
 				{ status: 400 },
 			);
 		}
 
-		const deletedData = await Data.findByIdAndDelete(id);
+		const deletedData = await Data.findByIdAndDelete(_id);
 
 		if (!deletedData) {
 			return NextResponse.json(
