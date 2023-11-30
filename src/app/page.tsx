@@ -95,7 +95,7 @@ export default function Home() {
 							},
 						});
 						const responseData = await dataResponse.json();
-						formik.setValues(initialValues);
+						// formik.setValues(initialValues);
 						return responseData;
 					}
 				},
