@@ -18,7 +18,7 @@ export const formValidationSchema = Yup.object().shape({
 		.max(32),
 	samplePointId: Yup.number()
 		.required("El campo sample point es requerido")
-		.integer("El valor debe ser un número entero")
+		.integer("El valor debe ser un número")
 		.min(-32768, "El número debe ser mayor o igual a -32,768")
 		.max(32767, "El número debe ser menor o igual a 32,767"),
 	surveyId: Yup.string()
@@ -54,20 +54,10 @@ export const formValidationSchema = Yup.object().shape({
 	owner: Yup.string().required("El campo es requerido").min(2),
 	sampleX: Yup.number()
 		.typeError("El valor debe ser un número")
-		.required("El campo latitud es requerido")
-		.min(2, "El campo no puede ser menor a 2 caracteres")
-		.test("is-decimal", "Debe ser un valor decimal", (value) => {
-			if (value === undefined || value === null) return true; // Allow empty values
-			return /^[0-9]*\.{1}[0-9]+$/.test(value.toString());
-		}),
+		.required("El campo longitud es requerido"),
 	sampleY: Yup.number()
 		.typeError("El valor debe ser un número")
-		.required("El campo latitud es requerido")
-		.min(2)
-		.test("is-decimal", "Debe ser un valor decimal", (value) => {
-			if (value === undefined || value === null) return true; // Allow empty values
-			return /^[0-9]*\.{1}[0-9]+$/.test(value.toString());
-		}),
+		.required("El campo longitud es requerido"),
 	anguleLandmark: Yup.string()
 		.required("El campo es requerido")
 		.min(2, "El campo no puede ser menor a 2 caracteres"),

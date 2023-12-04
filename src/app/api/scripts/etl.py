@@ -23,9 +23,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 # Opciones de navegación
 options = Options()
+options.add_argument('--headless')  # Modo sin cabeza
 options.add_argument('--start-maximized')
 options.add_argument('--disable-extensions')
 options.add_argument('--incognito')
+options.add_argument('--disable-notifications')  # Desactivar notificaciones
 
 # Instalar automáticamente el ChromeDriver
 ChromeDriverManager().install()

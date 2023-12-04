@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@nextui-org/react";
+import { Button, Divider, Switch } from "@nextui-org/react";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
@@ -42,6 +42,7 @@ const initialValues: IForm = {
 
 export default function Home() {
 	const [valuesForm, setValuesForm] = useState<IForm>(initialValues);
+	const [isCordenadas, setIsCordenadas] = useState(true);
 
 	const executeScript = async (data: IForm) => {
 		const scriptResponse = await fetch("/api/script", {
@@ -95,7 +96,7 @@ export default function Home() {
 							},
 						});
 						const responseData = await dataResponse.json();
-						// formik.setValues(initialValues);
+						formik.setValues(initialValues);
 						return responseData;
 					}
 				},
@@ -199,7 +200,7 @@ export default function Home() {
 							label="Sample Point ID:"
 							value={formik.values.samplePointId}
 							name="samplePointId"
-							placeholder="a2k_data_42"
+							placeholder="30000"
 							messageError={formik.errors.samplePointId}
 							isRequired
 							onChange={formik.handleChange}
@@ -227,26 +228,85 @@ export default function Home() {
 							onBlur={formik.handleBlur}
 						/>
 
-						<CustomInput
-							label="Longitud:"
-							value={formik.values.longitud}
-							name="longitud"
-							placeholder="112.97 "
-							messageError={formik.errors.longitud}
-							isRequired
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-						/>
-						<CustomInput
-							label="Latitud:"
-							value={formik.values.latitud}
-							name="latitud"
-							placeholder="40.94"
-							messageError={formik.errors.latitud}
-							isRequired
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-						/>
+						<Switch
+							isSelected={isCordenadas}
+							onValueChange={setIsCordenadas}
+							className="mt-2"
+						>
+							Tipo de formato de las cordenadas
+						</Switch>
+
+						<p className="text-small text-default-500">
+							Cambie el estado del Switch de acuerdo al formato en que quiere
+							digitar las cordenadas.
+						</p>
+
+						<Divider className="my-4" />
+						<p>
+							Cordenadas en formato {isCordenadas ? "Decimal" : "Sexagecimal"}
+						</p>
+						{isCordenadas ? (
+							<>
+								<CustomInput
+									label="Longitud:"
+									value={formik.values.longitud}
+									name="longitud"
+									placeholder="-54.20"
+									messageError={formik.errors.longitud}
+									isRequired
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+								/>
+								<CustomInput
+									label="Latitud:"
+									value={formik.values.latitud}
+									name="latitud"
+									placeholder="40.94"
+									messageError={formik.errors.latitud}
+									isRequired
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+								/>
+							</>
+						) : (
+							<div>
+								<div className="grid gap-3 grid-cols-3">
+									<CustomInput
+										label="Grados:"
+										value={formik.values.longitud}
+										name="longitud"
+										placeholder="-54.20"
+										messageError={formik.errors.longitud}
+										isRequired
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+									/>
+									<CustomInput
+										label="Minutos:"
+										value={formik.values.latitud}
+										name="latitud"
+										placeholder="40.94"
+										messageError={formik.errors.latitud}
+										isRequired
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+									/>
+									<CustomInput
+										label="Segundos:"
+										value={formik.values.latitud}
+										name="latitud"
+										placeholder="40.94"
+										messageError={formik.errors.latitud}
+										isRequired
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+									/>
+								</div>
+							</div>
+						)}
+
+						<Divider className="my-4" />
+
 						<CustomSelect
 							label="Angulo de sunpoint:"
 							name="anguleSunpoint"
