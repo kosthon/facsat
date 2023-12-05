@@ -27,16 +27,41 @@ export const formValidationSchema = Yup.object().shape({
 		)
 		.min(1, "El campo no puede ser menor a 1 caracter")
 		.max(32),
+
 	longitud: Yup.number()
 		.typeError("El valor debe ser un número")
-		.required("El campo longitud es requerido")
+		.required("El campo es obligatorio")
 		.min(-90, "La longitud no puede ser menor que -90")
 		.max(90, "La longitud no puede ser mayor que 90"),
+
 	latitud: Yup.number()
 		.typeError("El valor debe ser un número")
-		.required("El campo longitud es requerido")
-		.min(-180, "La longitud no puede ser menor que -180")
-		.max(180, "La longitud no puede ser mayor que 180"),
+		.required("El campo es obligatorio")
+		.min(-180, "La latitud no puede ser menor que -180")
+		.max(180, "La latitud no puede ser mayor que 180"),
+
+	// isCordenadas: Yup.boolean(),
+
+	// longitud: Yup.number().when("isCordenadas", {
+	// 	is: true,
+	// 	then: Yup.number()
+	// 		.typeError("El valor debe ser un número")
+	// 		.required("El campo longitud es requerido")
+	// 		.min(-90, "La longitud no puede ser menor que -90")
+	// 		.max(90, "La longitud no puede ser mayor que 90"),
+	// 	otherwise: Yup.number().notRequired(),
+	// }),
+
+	// latitud: Yup.number().when("isCordenadas", {
+	// 	is: true,
+	// 	then: Yup.number()
+	// 		.typeError("El valor debe ser un número")
+	// 		.required("El campo latitud es requerido")
+	// 		.min(-180, "La latitud no puede ser menor que -180")
+	// 		.max(180, "La latitud no puede ser mayor que 180"),
+	// 	otherwise: Yup.number().notRequired(),
+	// }),
+
 	anguleSunpoint: Yup.string()
 		.required("El campo es requerido")
 		.min(2, "El campo no puede ser menor a 2 caracteres"),

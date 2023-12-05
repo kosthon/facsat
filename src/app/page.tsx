@@ -1,5 +1,5 @@
 "use client";
-import { Button, Divider, Switch } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
@@ -19,6 +19,7 @@ import { IForm } from "./interfaces/form";
 import { formValidationSchema } from "./utils/validations/form";
 
 const initialValues: IForm = {
+	isCordenadas: true,
 	investigator: "",
 	remarks: "",
 	anguleLandmark: "",
@@ -228,7 +229,30 @@ export default function Home() {
 							onBlur={formik.handleBlur}
 						/>
 
-						<Switch
+						<div>
+							<CustomInput
+								label="Longitud:"
+								value={formik.values.longitud}
+								name="longitud"
+								placeholder="-54.20"
+								messageError={formik.errors.longitud}
+								isRequired
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+							/>
+							<CustomInput
+								label="Latitud:"
+								value={formik.values.latitud}
+								name="latitud"
+								placeholder="40.94"
+								messageError={formik.errors.latitud}
+								isRequired
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+							/>
+						</div>
+
+						{/* <Switch
 							isSelected={isCordenadas}
 							onValueChange={setIsCordenadas}
 							className="mt-2"
@@ -244,32 +268,69 @@ export default function Home() {
 						<Divider className="my-4" />
 						<p>
 							Cordenadas en formato {isCordenadas ? "Decimal" : "Sexagecimal"}
-						</p>
-						{isCordenadas ? (
+						</p> */}
+
+						{/* {isCordenadas ? (
 							<>
-								<CustomInput
-									label="Longitud:"
-									value={formik.values.longitud}
-									name="longitud"
-									placeholder="-54.20"
-									messageError={formik.errors.longitud}
-									isRequired
-									onChange={formik.handleChange}
-									onBlur={formik.handleBlur}
-								/>
-								<CustomInput
-									label="Latitud:"
-									value={formik.values.latitud}
-									name="latitud"
-									placeholder="40.94"
-									messageError={formik.errors.latitud}
-									isRequired
-									onChange={formik.handleChange}
-									onBlur={formik.handleBlur}
-								/>
+								<div>
+									<CustomInput
+										label="Longitud:"
+										value={formik.values.longitud}
+										name="longitud"
+										placeholder="-54.20"
+										messageError={formik.errors.longitud}
+										isRequired
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+									/>
+									<CustomInput
+										label="Latitud:"
+										value={formik.values.latitud}
+										name="latitud"
+										placeholder="40.94"
+										messageError={formik.errors.latitud}
+										isRequired
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+									/>
+								</div>
 							</>
 						) : (
 							<div>
+								<p>Longitud: </p>
+								<div className="grid gap-3 grid-cols-3">
+									<CustomInput
+										label="Grados:"
+										value={formik.values.longitud}
+										name="longitud"
+										placeholder="-54.20"
+										messageError={formik.errors.longitud}
+										isRequired
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+									/>
+									<CustomInput
+										label="Minutos:"
+										value={formik.values.latitud}
+										name="latitud"
+										placeholder="40.94"
+										messageError={formik.errors.latitud}
+										isRequired
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+									/>
+									<CustomInput
+										label="Segundos:"
+										value={formik.values.latitud}
+										name="latitud"
+										placeholder="40.94"
+										messageError={formik.errors.latitud}
+										isRequired
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+									/>
+								</div>
+								<p>Latitud: </p>
 								<div className="grid gap-3 grid-cols-3">
 									<CustomInput
 										label="Grados:"
@@ -304,9 +365,7 @@ export default function Home() {
 								</div>
 							</div>
 						)}
-
-						<Divider className="my-4" />
-
+						<Divider className="my-4" /> */}
 						<CustomSelect
 							label="Angulo de sunpoint:"
 							name="anguleSunpoint"

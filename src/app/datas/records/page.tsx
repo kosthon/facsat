@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { IForm } from "../../interfaces/form";
 
 const initialValues: IForm = {
+	isCordenadas: true,
 	investigator: "",
 	remarks: "",
 	anguleLandmark: "",

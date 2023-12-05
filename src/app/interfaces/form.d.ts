@@ -1,5 +1,6 @@
 export interface IForm {
 	_id?: number;
+	isCordenadas: boolean;
 	investigator: string;
 	remarks: string;
 	anguleLandmark: string;
