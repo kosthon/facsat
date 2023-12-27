@@ -139,6 +139,11 @@ const dataSchema = new Schema(
 			required: [true, "El campo es requerido"],
 			trim: true,
 		},
+
+		isCordenadas: {
+			type: String,
+			required: [false],
+		},
 	},
 	{
 		timestamps: true, //TODO createdAT, updatedAT

@@ -21,12 +21,10 @@ export const formValidationSchema = Yup.object().shape({
 		.integer("El valor debe ser un número")
 		.min(-32768, "El número debe ser mayor o igual a -32,768")
 		.max(32767, "El número debe ser menor o igual a 32,767"),
-	surveyId: Yup.string()
-		.required(
-			"El campo survey ID es requerido y no debe superar los 32 caracteres",
-		)
-		.min(1, "El campo no puede ser menor a 1 caracter")
-		.max(32),
+
+	surveyId: Yup.number()
+		.typeError("El valor debe ser un número")
+		.required("El campo es obligatorio"),
 
 	longitud: Yup.number()
 		.typeError("El valor debe ser un número")

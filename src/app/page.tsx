@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@nextui-org/react";
+import { Button, Divider, Switch } from "@nextui-org/react";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
@@ -19,7 +19,6 @@ import { IForm } from "./interfaces/form";
 import { formValidationSchema } from "./utils/validations/form";
 
 const initialValues: IForm = {
-	isCordenadas: true,
 	investigator: "",
 	remarks: "",
 	anguleLandmark: "",
@@ -30,7 +29,7 @@ const initialValues: IForm = {
 	campaignName: "",
 	siteAcquisition: "",
 	samplePointId: "",
-	surveyId: 0,
+	surveyId: "",
 	longitud: "",
 	latitud: "",
 	anguleSunpoint: "",
@@ -229,7 +228,7 @@ export default function Home() {
 							onBlur={formik.handleBlur}
 						/>
 
-						<div>
+						{/* <div>
 							<CustomInput
 								label="Longitud:"
 								value={formik.values.longitud}
@@ -250,9 +249,9 @@ export default function Home() {
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
 							/>
-						</div>
+						</div> */}
 
-						{/* <Switch
+						<Switch
 							isSelected={isCordenadas}
 							onValueChange={setIsCordenadas}
 							className="mt-2"
@@ -268,9 +267,9 @@ export default function Home() {
 						<Divider className="my-4" />
 						<p>
 							Cordenadas en formato {isCordenadas ? "Decimal" : "Sexagecimal"}
-						</p> */}
+						</p>
 
-						{/* {isCordenadas ? (
+						{isCordenadas ? (
 							<>
 								<div>
 									<CustomInput
@@ -365,7 +364,7 @@ export default function Home() {
 								</div>
 							</div>
 						)}
-						<Divider className="my-4" /> */}
+						<Divider className="my-4" />
 						<CustomSelect
 							label="Angulo de sunpoint:"
 							name="anguleSunpoint"

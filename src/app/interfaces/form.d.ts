@@ -1,6 +1,5 @@
 export interface IForm {
 	_id?: number;
-	isCordenadas: boolean;
 	investigator: string;
 	remarks: string;
 	anguleLandmark: string;
@@ -11,7 +10,7 @@ export interface IForm {
 
 	siteAcquisition: string;
 	samplePointId: string;
-	surveyId: number;
+	surveyId: string;
 	longitud: string;
 	latitud: string;
 	anguleSunpoint: string;
