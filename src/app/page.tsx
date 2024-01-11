@@ -65,19 +65,22 @@ export default function Home() {
 	const sendDataRequest = async (data: IForm) => {
 		try {
 			formik.validateForm(data);
-			console.log("INICIO DE SCRIPT");
 			let scriptResult;
+			let surveyId: string;
+
+			if (data.campaignName === "LEO") {
+				surveyId = "001";
+			} else if (data.campaignName === "Commissioning") {
+				surveyId = "002";
+			} else if (data.campaignName === "Operation") {
+				surveyId = "003";
+			}
 
 			await toast.promise(
 				async () => {
 					scriptResult = await executeScript(data);
-					console.log("RESPONSE PETICION: ", scriptResult);
 					if (scriptResult.success) {
-						console.log("INICIO DE PETICION GUARDAR DATOS");
 						const lastRegister = scriptResult.ultimoResultado;
-						console.log(data);
-						console.log("DATA POR ENVIAR", { ...data, lastRegister });
-
 						const dataResponse = await fetch("/api/data", {
 							method: "POST",
 							body: JSON.stringify({
@@ -90,6 +93,7 @@ export default function Home() {
 								altitude: lastRegister.altitude,
 								elevation: lastRegister.elevation,
 								TLE: lastRegister.TLE,
+								surveyId: surveyId,
 							}),
 							headers: {
 								"Content-Type": "application/json",
@@ -140,16 +144,6 @@ export default function Home() {
 						Los campos con (*) son obligatorios.
 					</p>
 					<div className="pt-2">
-						<CustomInput
-							label="Survey ID:"
-							value={formik.values.surveyId}
-							name="surveyId"
-							placeholder="Calibración Operación"
-							messageError={formik.errors.surveyId}
-							isRequired
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-						/>
 
 						<CustomSelect
 							label="Campaign Name:"
