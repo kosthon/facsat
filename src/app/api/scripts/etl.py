@@ -8,8 +8,8 @@ import time
 import uuid
 
 import pandas as pd
-import pyautogui
-import pygetwindow as gw
+#import pyautogui
+#import pygetwindow as gw
 import skyfield.api
 import skyfield.elementslib
 from selenium import webdriver
@@ -23,10 +23,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 # Opciones de navegación
 options = Options()
-options.add_argument('--start-maximized')
-options.add_argument('--disable-extensions')
-options.add_argument('--incognito')
-options.add_argument('--disable-notifications')  # Desactivar notificaciones
+options.add_argument('--window-size=1920,1080')
+options.add_argument('--headless')
 
 # Instalar automáticamente el ChromeDriver
 ChromeDriverManager().install()
@@ -66,15 +64,9 @@ dotElement = WebDriverWait(driver, 10).until(
 
 
 def perform_right_click(element):
-    # Obtener la posición del elemento en la ventana del navegador
-    location = element.location
-    x = location['x']
-    y = location['y'] + 120
-
-    # Simular el clic derecho utilizando pyautogui
-    pyautogui.moveTo(x, y)
-    pyautogui.click(button='right')
-
+    actions = Actions(element)
+    btnElement = driver.findElement(By.CSS_SELECTOR, 'div.leaflet-marker-icon.icon-dot')
+    actions.context(btnElement).perform()
 
 perform_right_click(dotElement)
 time.sleep(3)
