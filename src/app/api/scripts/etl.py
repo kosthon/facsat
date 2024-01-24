@@ -64,54 +64,6 @@ latitud = sys.argv[1]
 longitud = sys.argv[2]
 
 time.sleep(3)
-
-# Escribir en el elemento
-textarea.send_keys(latitud + ', ' + longitud)
-textarea.send_keys(Keys.ENTER)
-time.sleep(3)
-textarea.send_keys(Keys.ENTER)
-time.sleep(5)
-
-# Dar click en el dot del punto en el mapa
-# Realizar la acción de clic derecho utilizando pyautogui
-dotElement = WebDriverWait(driver, 10).until(
-    EC.element_to_be_clickable(
-        (By.CSS_SELECTOR, 'div.leaflet-marker-icon.icon-dot'))
-)
-
-
-def perform_right_click(element):
-    # Obtener la posición del elemento en la ventana del navegador
-    location = element.location
-    x = location['x']
-    y = location['y'] + 120
-
-    # Simular el clic derecho utilizando pyautogui
-    pyautogui.moveTo(x, y)
-    pyautogui.click(button='right')
-
-
-perform_right_click(dotElement)
-time.sleep(3)
-
-temperatureOption = WebDriverWait(driver, 10).until(
-    EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-do="picker"]'))
-)
-
-temperatureOption.click()
-time.sleep(3)
-
-# Tomar los grados del picker
-pickerGrades = driver.find_element(
-    By.CSS_SELECTOR, 'div.picker-content span[data-ref="content"] big[data-do="changeMetric"]')
-numberGrades = pickerGrades.text.split()[0]
-print('Grados: ' + numberGrades)
-
-numberPresion = '1.012'
-print('Presion: ' + numberPresion)
-
-
-time.sleep(3)
 # CAPTURAR DATOS DE CELASTRAK
 driver.get('https://celestrak.org/NORAD/elements/gp.php?CATNR=56205')
 
@@ -210,8 +162,7 @@ time.sleep(5)
 # Ruta del archivo
 ruta_archivo = "public/results/datos.csv"
 # Crear una lista con los elementos individuales a escribir en cada columna
-fila = [numberGrades, numberPresion, textoCelastrak,
-        horaLocal, hora_juliana, horaUTC, altitud, elevation]
+fila = [textoCelastrak, horaLocal, hora_juliana, horaUTC, altitud, elevation]
 # Abrir el archivo CSV en modo escritura, utilizando el modo "append"
 with open(ruta_archivo, "a", newline="") as archivo_csv:
     # Crear un objeto escritor CSV con el delimitador de coma
@@ -228,8 +179,6 @@ consulta_actual = {
     "id": str(uuid.uuid4()),  # Generar un identificador único
     "latitud": latitud,
     "longitud": longitud,
-    "temperature": numberGrades,
-    "pressure": numberPresion,
     "localTime": horaLocal,
     "julianTime": hora_juliana,
     "utcTime": horaUTC,
@@ -267,8 +216,6 @@ geojson = {
         "coordinates": [longitud, latitud]
     },
     "properties": {
-        "temperature": numberGrades,
-        "pressure": numberPresion,
         "localTime": horaLocal,
         "julianTime": hora_juliana,
         "utcTime": horaUTC,
