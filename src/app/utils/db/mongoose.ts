@@ -7,7 +7,7 @@ const conn = {
 export async function connectDB() {
 	if (conn.isConnected) return;
 	try {
-		await connect("mongodb://127.0.0.1:27017/facsat");
+		await connect("mongodb://facsat-db:27017/facsat");
 		console.log("Conexión exitosa a la base de datos.");
 		conn.isConnected = connection.readyState === 1;
 	} catch (error) {
