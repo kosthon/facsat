@@ -8,30 +8,57 @@ import time
 import uuid
 
 import pandas as pd
-import pyautogui
-import pygetwindow as gw
 import skyfield.api
-import skyfield.elementslib
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
-# Opciones de navegación
-options = Options()
-options.add_argument('--headless')
-options.add_argument('--disable-extensions')
-options.add_argument('--disable-notifications')
+def iniciar_navegador():
+    browsers = ['chrome', 'firefox', 'edge']
 
-# Instalar automáticamente el ChromeDriver
-ChromeDriverManager().install()
+    for browser_name in browsers:
+        try:
+            if browser_name == 'chrome':
+                options = ChromeOptions()
+                options.add_argument('--headless')
+                options.add_argument('--disable-extensions')
+                options.add_argument('--disable-notifications')
+                browser = webdriver.Chrome(options=options)
+                driver_manager = ChromeDriverManager()
+            elif browser_name == 'firefox':
+                options = FirefoxOptions()
+                options.headless = True
+                browser = webdriver.Firefox(options=options)
+                driver_manager = GeckoDriverManager()
+            elif browser_name == 'edge':
+                options = EdgeOptions()
+                options.use_chromium = True
+                options.add_argument('--headless')
+                browser = webdriver.Edge(options=options)
+                driver_manager = EdgeChromiumDriverManager()
+            
+            driver_manager.install()
+            return browser
+        except Exception as e:
+            print(f"No se pudo iniciar {browser_name}: {e}")
+            continue
+
+    print("Ningún navegador disponible.")
+    return None
 
 # Inicializar el navegador
-driver = webdriver.Chrome(options=options)
+driver = iniciar_navegador()
+
+if not driver:
+    sys.exit(1)
 
 latitud = sys.argv[1]
 longitud = sys.argv[2]
@@ -43,6 +70,7 @@ print('Grados: ' + numberGrades)
 
 numberPresion = '1.012'
 print('Presion: ' + numberPresion)
+
 
 time.sleep(3)
 # CAPTURAR DATOS DE CELASTRAK
@@ -218,3 +246,4 @@ with open(ruta_geojson, 'w') as archivo_geojson:
 print("Datos guardados en el archivo GeoJSON:", ruta_geojson)
 
 time.sleep(5)
+driver.quit()

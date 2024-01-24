@@ -98,8 +98,6 @@ export default function FormPage() {
 
 	// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const handleDeleteItem = async (itemId: any) => {
-		console.log(itemId);
-
 		try {
 			const response = await fetch(`/api/data/${itemId}`, {
 				method: "DELETE",

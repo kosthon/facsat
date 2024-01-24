@@ -60,7 +60,6 @@ export default function Home() {
 				throw new Error(`Error: ${response.status}`);
 			}
 			const responseData = await response.json();
-			console.log('LA RESPONSE ES: ', responseData);
 			return responseData;
 		} catch (error) {
 			console.error('Error al realizar la petición:', error);
