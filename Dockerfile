@@ -1,9 +1,12 @@
 FROM node:18-alpine AS base
 
+# Install gcc and development tools
+#RUN apk add build-base cmake
+
 # Install Python and modules
-RUN apk add --no-cache python3 py3-pip chromium
+RUN apk add --no-cache python3 python3-dev py3-pip chromium
 RUN pip install webdriver-manager --break-system-packages
-RUN pip install Pandas3 --break-system-packages
+RUN pip install Pandas --break-system-packages
 #RUN pip install pyautogui
 #RUN pip install pygetwindow
 RUN pip install skyfield --break-system-packages
