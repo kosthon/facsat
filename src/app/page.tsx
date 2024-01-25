@@ -104,7 +104,7 @@ export default function Home() {
 					resultTemperaturePressure = await getTemperaturePressure(data);
 					scriptResult = await executeScript(data);
 					if (scriptResult.success) {
-						const lastRegister = scriptResult.ultimoResultado;
+						const lastRegister = scriptResult.resultadoConsulta;
 						const currentData = resultTemperaturePressure.currentConditions;
 						const dataResponse = await fetch('/api/data', {
 							method: 'POST',
