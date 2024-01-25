@@ -26,22 +26,19 @@ def iniciar_navegador():
 
     for browser_name in browsers:
         try:
-            if browser_name == 'chrome':
-                options = ChromeOptions()
+            if browser_name == 'firefox':
+                options = FirefoxOptions()
                 options.add_argument('--headless')
                 options.add_argument('--disable-extensions')
                 options.add_argument('--disable-notifications')
-                browser = webdriver.Chrome(options=options)
-                driver_manager = ChromeDriverManager()
-            elif browser_name == 'firefox':
-                options = FirefoxOptions()
-                options.headless = True
                 browser = webdriver.Firefox(options=options)
                 driver_manager = GeckoDriverManager()
-            elif browser_name == 'edge':
+            elif browser_name == 'chromium':
                 options = EdgeOptions()
                 options.use_chromium = True
                 options.add_argument('--headless')
+                options.add_argument('--disable-extensions')
+                options.add_argument('--disable-notifications')
                 browser = webdriver.Edge(options=options)
                 driver_manager = EdgeChromiumDriverManager()
             
