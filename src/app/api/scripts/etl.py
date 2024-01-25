@@ -7,7 +7,6 @@ import sys
 import time
 import uuid
 
-import pandas as pd
 import skyfield.api
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -22,7 +21,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 def iniciar_navegador():
-    browsers = ['chrome', 'firefox', 'edge']
+    browsers = ['firefox', 'chromium']
 
     for browser_name in browsers:
         try:
@@ -31,6 +30,7 @@ def iniciar_navegador():
                 options.add_argument('--headless')
                 options.add_argument('--disable-extensions')
                 options.add_argument('--disable-notifications')
+                options.add_argument('--window-size=1920x1080')
                 browser = webdriver.Firefox(options=options)
                 driver_manager = GeckoDriverManager()
             elif browser_name == 'chromium':
@@ -39,9 +39,10 @@ def iniciar_navegador():
                 options.add_argument('--headless')
                 options.add_argument('--disable-extensions')
                 options.add_argument('--disable-notifications')
+                options.add_argument('--window-size=1920x1080')
                 browser = webdriver.Edge(options=options)
                 driver_manager = EdgeChromiumDriverManager()
-            
+
             driver_manager.install()
             return browser
         except Exception as e:
