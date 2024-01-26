@@ -7,7 +7,6 @@ import sys
 import time
 import uuid
 
-import pandas as pd
 import skyfield.api
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -26,7 +25,7 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 project_dir = os.path.dirname(script_dir)
 
 def iniciar_navegador():
-    browsers = ['chrome', 'firefox', 'edge']
+    browsers = ['firefox', 'chromium']
 
     for browser_name in browsers:
         try:
@@ -35,6 +34,7 @@ def iniciar_navegador():
                 options.add_argument('--headless')
                 options.add_argument('--disable-extensions')
                 options.add_argument('--disable-notifications')
+                options.add_argument('--window-size=1920x1080')
                 browser = webdriver.Firefox(options=options)
                 driver_manager = GeckoDriverManager()
             elif browser_name == 'chromium':
@@ -43,9 +43,10 @@ def iniciar_navegador():
                 options.add_argument('--headless')
                 options.add_argument('--disable-extensions')
                 options.add_argument('--disable-notifications')
+                options.add_argument('--window-size=1920x1080')
                 browser = webdriver.Edge(options=options)
                 driver_manager = EdgeChromiumDriverManager()
-            
+
             driver_manager.install()
             return browser
         except Exception as e:
@@ -188,7 +189,7 @@ except FileNotFoundError:
 consultas_previas.append(consulta_actual)
 
 # Guardar la lista actualizada en el archivo JSON
-with open(ruta_archivojson, "w") as archivo_json:
+with open(ruta_archivojson, "w+") as archivo_json:
     json.dump(consultas_previas, archivo_json)
 
 print("Datos guardados en el archivo JSON:", ruta_archivojson)
