@@ -7,7 +7,6 @@ import sys
 import time
 import uuid
 
-import pandas as pd
 import skyfield.api
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -21,30 +20,33 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
+
+script_dir = os.path.dirname(os.path.realpath(__file__))
+project_dir = os.path.dirname(script_dir)
+
 def iniciar_navegador():
-    browsers = ['chrome', 'firefox', 'edge']
+    browsers = ['firefox', 'chromium']
 
     for browser_name in browsers:
         try:
-            if browser_name == 'chrome':
-                options = ChromeOptions()
+            if browser_name == 'firefox':
+                options = FirefoxOptions()
                 options.add_argument('--headless')
                 options.add_argument('--disable-extensions')
                 options.add_argument('--disable-notifications')
-                browser = webdriver.Chrome(options=options)
-                driver_manager = ChromeDriverManager()
-            elif browser_name == 'firefox':
-                options = FirefoxOptions()
-                options.headless = True
+                options.add_argument('--window-size=1920x1080')
                 browser = webdriver.Firefox(options=options)
                 driver_manager = GeckoDriverManager()
-            elif browser_name == 'edge':
+            elif browser_name == 'chromium':
                 options = EdgeOptions()
                 options.use_chromium = True
                 options.add_argument('--headless')
+                options.add_argument('--disable-extensions')
+                options.add_argument('--disable-notifications')
+                options.add_argument('--window-size=1920x1080')
                 browser = webdriver.Edge(options=options)
                 driver_manager = EdgeChromiumDriverManager()
-            
+
             driver_manager.install()
             return browser
         except Exception as e:
@@ -62,15 +64,6 @@ if not driver:
 
 latitud = sys.argv[1]
 longitud = sys.argv[2]
-
-time.sleep(3)
-
-numberGrades = '100'
-print('Grados: ' + numberGrades)
-
-numberPresion = '1.012'
-print('Presion: ' + numberPresion)
-
 
 time.sleep(3)
 # CAPTURAR DATOS DE CELASTRAK
@@ -166,22 +159,6 @@ altitud = altitud_element.text
 elevation = elevation_element.text
 
 time.sleep(5)
-
-# EXPORTACIÓN DE DATA A ARCHIVOS EXCEL
-# Ruta del archivo
-ruta_archivo = "public/results/datos.csv"
-# Crear una lista con los elementos individuales a escribir en cada columna
-fila = [numberGrades, numberPresion, textoCelastrak,
-        horaLocal, hora_juliana, horaUTC, altitud, elevation]
-# Abrir el archivo CSV en modo escritura, utilizando el modo "append"
-with open(ruta_archivo, "a", newline="") as archivo_csv:
-    # Crear un objeto escritor CSV con el delimitador de coma
-    escritor_csv = csv.writer(archivo_csv, delimiter=',')
-    # Escribir la fila en el archivo CSV
-    escritor_csv.writerow(fila)
-print("Datos guardados en el archivo:", ruta_archivo)
-
-
 # EXPORTACIÓN DE DATA A ARCHIVOS JSON
 ruta_archivojson = "public/results/datos.json"
 # Crear un diccionario con los datos de la consulta actual
@@ -189,8 +166,6 @@ consulta_actual = {
     "id": str(uuid.uuid4()),  # Generar un identificador único
     "latitud": latitud,
     "longitud": longitud,
-    "temperature": numberGrades,
-    "pressure": numberPresion,
     "localTime": horaLocal,
     "julianTime": hora_juliana,
     "utcTime": horaUTC,
@@ -214,36 +189,11 @@ except FileNotFoundError:
 consultas_previas.append(consulta_actual)
 
 # Guardar la lista actualizada en el archivo JSON
-with open(ruta_archivojson, "w") as archivo_json:
+with open(ruta_archivojson, "w+") as archivo_json:
     json.dump(consultas_previas, archivo_json)
 
 print("Datos guardados en el archivo JSON:", ruta_archivojson)
 
-
-# Crear objeto GeoJSON
-geojson = {
-    "type": "Feature",
-    "geometry": {
-        "type": "Point",
-        "coordinates": [longitud, latitud]
-    },
-    "properties": {
-        "temperature": numberGrades,
-        "pressure": numberPresion,
-        "localTime": horaLocal,
-        "julianTime": hora_juliana,
-        "utcTime": horaUTC,
-        "altitude": altitud,
-        "elevation": elevation,
-        "TLE": TLE,
-    }
-}
-
-# Guardar información en archivo GeoJSON
-ruta_geojson = 'public/results/datos.geojson'
-with open(ruta_geojson, 'w') as archivo_geojson:
-    json.dump(geojson, archivo_geojson)
-print("Datos guardados en el archivo GeoJSON:", ruta_geojson)
 
 time.sleep(5)
 driver.quit()
