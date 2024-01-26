@@ -25,11 +25,13 @@ export async function POST(request: Request) {
 			process.cwd(),
 			"public/results/datos.json",
 		);
+		
 		const resultadosJSON = await fs.readFile(resultadosPath, "utf-8");
+
 		const resultados = JSON.parse(resultadosJSON);
 
 		const ultimoResultado = resultados[resultados.length - 1];
-
+		
 		return NextResponse.json(
 			{ success: true, ultimoResultado },
 			{ status: 200 },
