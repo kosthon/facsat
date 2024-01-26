@@ -1,8 +1,8 @@
 'use client';
-import {Button, Divider, Switch} from '@nextui-org/react';
-import {useFormik} from 'formik';
-import {useState} from 'react';
-import {Toaster, toast} from 'sonner';
+import { Button, Divider, Switch } from '@nextui-org/react';
+import { useFormik } from 'formik';
+import { useState } from 'react';
+import { Toaster, toast } from 'sonner';
 import CustomInput from './components/CustomInput/CustomInput';
 import CustomSelect from './components/CustomSelect/CustomSelect';
 import DatePicker from './components/DatePicker/DatePicker';
@@ -16,8 +16,8 @@ import {
 	OBJECT_OWNERS,
 	OBJECT_STATE,
 } from './constants/constants';
-import {IForm} from './interfaces/form';
-import {formValidationSchema} from './utils/validations/form';
+import { IForm } from './interfaces/form';
+import { formValidationSchema } from './utils/validations/form';
 
 const initialValues: IForm = {
 	investigator: '',
@@ -104,7 +104,7 @@ export default function Home() {
 					resultTemperaturePressure = await getTemperaturePressure(data);
 					scriptResult = await executeScript(data);
 					if (scriptResult.success) {
-						const lastRegister = scriptResult.resultadoConsulta;
+						const lastRegister = scriptResult.ultimoResultado;
 						const currentData = resultTemperaturePressure.currentConditions;
 						const dataResponse = await fetch('/api/data', {
 							method: 'POST',
