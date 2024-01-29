@@ -28,5 +28,6 @@ export const OBJECT_STATE = [
 	{value: 'Procesado', label: 'Procesado'},
 ];
 
-export const API_KEY_VISUALCROSSING = process.env.VISUALCROSSING || 'no_se_especifico_api_key_visualcrossing';
-export const URI_MONGO = process.env.URI_MONGO || 'no_se_especifico_mongo_uri';
+export const API_KEY_VISUALCROSSING = '5HBPLFZ27FH7LLS7ZTGSQGTHX';
+export const URI_MONGO =
+	'mongodb+srv://alejofova:Kosthonsb1998@clusterfacsat.oceki7m.mongodb.net/?retryWrites=true&w=majority';

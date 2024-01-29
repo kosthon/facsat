@@ -148,6 +148,8 @@ time.sleep(5)
 # CAPTURA DE DATOS DESDE N2YO
 driver.get('https://www.n2yo.com/?s=56205')
 
+time.sleep(10)
+
 altitud_element = WebDriverWait(driver, 10).until(
     EC.element_to_be_clickable((By.CSS_SELECTOR, 'div#sataltkm'))
 )
@@ -176,7 +178,7 @@ consulta_actual = {
 
 # Cargar el contenido del archivo JSON solo si no está vacío
 try:
-    with open(ruta_archivojson, "r") as archivo_json:
+    with open(ruta_archivojson, "r", encoding="utf-8-sig") as archivo_json:
         contenido_json = archivo_json.read()
         if contenido_json:
             consultas_previas = json.loads(contenido_json)

@@ -1,7 +1,7 @@
 FROM node:18-alpine AS base
 
 # Install Python and modules
-RUN apk add --no-cache python3 py3-pip chromium
+RUN apk add --no-cache python3 py3-pip chromium firefox
 RUN pip install webdriver-manager --break-system-packages
 RUN pip install skyfield --break-system-packages
 RUN pip install selenium --break-system-packages
@@ -28,7 +28,6 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY .env.local .
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry

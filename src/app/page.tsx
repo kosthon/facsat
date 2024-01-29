@@ -14,7 +14,7 @@ import {
 	OBJECT_CAMPAIGN_NAME,
 	OBJECT_METHOD_CAPTURE,
 	OBJECT_OWNERS,
-	OBJECT_STATE,
+	OBJECT_STATE
 } from './constants/constants';
 import { IForm } from './interfaces/form';
 import { formValidationSchema } from './utils/validations/form';
@@ -60,6 +60,8 @@ export default function Home() {
 				throw new Error(`Error: ${response.status}`);
 			}
 			const responseData = await response.json();
+			console.log('visulacrossing');
+			
 			return responseData;
 		} catch (error) {
 			console.error('Error al realizar la petición:', error);
@@ -81,6 +83,7 @@ export default function Home() {
 		if (!scriptResponse.ok) {
 			throw new Error(`Error: ${scriptResponse.status}`);
 		}
+		console.log("peticion ´python");
 		return scriptResponse.json();
 	};
 

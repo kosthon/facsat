@@ -13,10 +13,6 @@ services:
     depends_on:
       - db
     tty: true
-    env_file:
-      - .env.local
-    volumes:
-      - .env.local:/app/.env.local
     ports:
       - 3000:3000
     networks:
@@ -30,15 +26,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DATABASE: facsat
-      MONGO_INITDB_COLLECTION: datas
-    volumes:
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      - ./data/db:/data/db
-    command: ["mongod", "--auth"]
     networks:
       - facsat-network
 
 networks:
   facsat-network:
-...

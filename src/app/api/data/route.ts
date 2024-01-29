@@ -13,6 +13,7 @@ export async function POST(request: any) {
 	try {
 		const data = await request.json();
 		const newData = new Data(data);
+		console.log(data);
 		const savedData = await newData.save();
 		return NextResponse.json(savedData);
 		// rome-ignore lint/suspicious/noExplicitAny: <explanation>
