@@ -19,13 +19,9 @@ services:
       - facsat-network
 
   db:
-    image: mongo:6.0.13-jammy
-    restart: unless-stopped
-    container_name: facsat-db
-    hostname: facsat-db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+    image: mongo
+    ports:
+      - "27017:27017"
     networks:
       - facsat-network
 
