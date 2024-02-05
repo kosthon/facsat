@@ -1,4 +1,3 @@
-import { URI_MONGO } from "@/app/constants/constants";
 import { connect, connection } from "mongoose";
 
 const conn = {
@@ -8,7 +7,7 @@ const conn = {
 export async function connectDB() {
 	if (conn.isConnected) return;
 	try {
-		await connect(URI_MONGO)
+		await connect("mongodb://db:27017/facsat");
 		console.log("Conexión exitosa a la base de datos.");
 		conn.isConnected = connection.readyState === 1;
 	} catch (error) {
