@@ -1,24 +1,24 @@
-import { connect, connection } from "mongoose";
+import mongoose from "mongoose";
 
 const conn = {
-	isConnected: false,
+    isConnected: false,
 };
 
 export async function connectDB() {
-	if (conn.isConnected) return;
-	try {
-		await connect("mongodb://db:27017/facsat");
-		console.log("Conexión exitosa a la base de datos.");
-		conn.isConnected = connection.readyState === 1;
-	} catch (error) {
-		console.error("Error al conectar a la base de datos:", error);
-	}
+    if (conn.isConnected) return;
+    try {
+        await mongoose.connect("mongodb://root:example@db:27017/facsat?useNewUrlParser=true&authSource=admin");
+        console.log("Conexión exitosa a la base de datos.");
+        conn.isConnected = mongoose.connection.readyState === 1;
+    } catch (error) {
+        console.error("Error al conectar a la base de datos:", error);
+    }
 }
 
-connection.on("connected", () => {
-	console.log("Moongose is connected");
+mongoose.connection.on("connected", () => {
+    console.log("Mongoose is connected");
 });
 
-connection.on("error", (err) => {
-	console.log("Moongose connection Error", err);
+mongoose.connection.on("error", (err) => {
+    console.log("Mongoose connection Error", err);
 });
