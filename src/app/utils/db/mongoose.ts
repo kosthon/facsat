@@ -8,7 +8,7 @@ export async function connectDB() {
 	if (conn.isConnected) return;
 	try {
 		await mongoose.connect(
-			'mongodb://root:example@db:27017/facsat?useNewUrlParser=true&authSource=admin'
+			`mongodb://${process.env.NEXT_PUBLIC_USER_DB}:${process.env.NEXT_PUBLIC_PASS_DB}@db:27017/facsat?useNewUrlParser=true&authSource=admin`
 		);
 		console.log('Conexión exitosa a la base de datos.');
 		conn.isConnected = mongoose.connection.readyState === 1;

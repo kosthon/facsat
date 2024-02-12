@@ -27,7 +27,3 @@ export const OBJECT_STATE = [
 	{value: 'Crudo', label: 'Crudo'},
 	{value: 'Procesado', label: 'Procesado'},
 ];
-
-export const API_KEY_VISUALCROSSING = '5HBPLFZ27FH7LLS7ZTGSQGTHX';
-export const URI_MONGO =
-	'mongodb+srv://alejofova:Kosthonsb1998@clusterfacsat.oceki7m.mongodb.net/?retryWrites=true&w=majority';

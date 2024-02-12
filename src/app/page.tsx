@@ -8,7 +8,6 @@ import CustomSelect from './components/CustomSelect/CustomSelect';
 import DatePicker from './components/DatePicker/DatePicker';
 import TextArea from './components/TextArea/TextArea';
 import {
-	API_KEY_VISUALCROSSING,
 	OBJECT_ANGULE_SUNPOINT,
 	OBJECT_ANGULO_LANDMARK,
 	OBJECT_CAMPAIGN_NAME,
@@ -48,7 +47,7 @@ export default function Home() {
 	const getTemperaturePressure = async (data: IForm) => {
 		try {
 			const response = await fetch(
-				`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${data.longitud},${data.latitud}?unitGroup=metric&key=${API_KEY_VISUALCROSSING}&include=current&elements=temp,pressure`,
+				`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${data.longitud},${data.latitud}?unitGroup=metric&key=${process.env.NEXT_PUBLIC_API_KEY_VISUALCROSSING}&include=current&elements=temp,pressure`,
 				{
 					method: 'GET',
 					headers: {
