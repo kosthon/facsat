@@ -25,7 +25,6 @@ const initialValues: IForm = {
 	state: '',
 	sampleX: '',
 	sampleY: '',
-
 	campaignName: '',
 	siteAcquisition: '',
 	samplePointId: '',
