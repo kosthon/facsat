@@ -38,4 +38,6 @@ next-env.d.ts
 
 /facsat
 /facsat.pub
+#public/results/
+data/db/*
 !data/db/.gitkeep
