@@ -11,6 +11,7 @@ export async function GET() {
 // rome-ignore lint/suspicious/noExplicitAny: <explanation>
 export async function POST(request: any) {
 	try {
+		connectDB();
 		const data = await request.json();
 		const newData = new Data(data);
 		console.log(data);
