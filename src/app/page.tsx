@@ -79,7 +79,6 @@ export default function Home() {
 					'Content-Type': 'application/json',
 				},
 			});
-			console.log('SCRIPT REPSONSE', scriptResponse);
 
 			if (!scriptResponse.ok) {
 				const errorMessage = await scriptResponse.json();
@@ -89,7 +88,6 @@ export default function Home() {
 			return scriptResponse.json();
 		} catch (error: any) {
 			console.error('Error en el cliente:', error.message);
-			// Aquí puedes mostrar un mensaje de error al usuario si lo deseas
 			throw error;
 		}
 	};
