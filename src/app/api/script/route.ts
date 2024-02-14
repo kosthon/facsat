@@ -18,9 +18,7 @@ export async function POST(request: Request) {
 	try {
 		const resultadoBuffer = execSync(`python ${scriptPath} ${longitud} ${latitud}`);
 		const resultadoJSON = resultadoBuffer.toString('utf-8').replace(/'/g, '"');
-		console.log('Contenido JSON:', resultadoJSON);
 		const resultado = JSON.parse(resultadoJSON);
-		console.log('RESULTADO', resultado);
 		return NextResponse.json({success: true, resultado: resultado}, {status: 200});
 	} catch (error: any) {
 		const errorMessage = error.message || 'Error en el servidor';
