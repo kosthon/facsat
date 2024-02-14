@@ -1,8 +1,8 @@
 'use client';
-import { Button, Divider, Switch } from '@nextui-org/react';
-import { useFormik } from 'formik';
-import { useState } from 'react';
-import { Toaster, toast } from 'sonner';
+import {Button, Divider, Switch} from '@nextui-org/react';
+import {useFormik} from 'formik';
+import {useState} from 'react';
+import {Toaster, toast} from 'sonner';
 import CustomInput from './components/CustomInput/CustomInput';
 import CustomSelect from './components/CustomSelect/CustomSelect';
 import DatePicker from './components/DatePicker/DatePicker';
@@ -13,10 +13,10 @@ import {
 	OBJECT_CAMPAIGN_NAME,
 	OBJECT_METHOD_CAPTURE,
 	OBJECT_OWNERS,
-	OBJECT_STATE
+	OBJECT_STATE,
 } from './constants/constants';
-import { IForm } from './interfaces/form';
-import { formValidationSchema } from './utils/validations/form';
+import {IForm} from './interfaces/form';
+import {formValidationSchema} from './utils/validations/form';
 
 const initialValues: IForm = {
 	investigator: '',
@@ -60,7 +60,7 @@ export default function Home() {
 			}
 			const responseData = await response.json();
 			console.log('visulacrossing');
-			
+
 			return responseData;
 		} catch (error) {
 			console.error('Error al realizar la petición:', error);
@@ -69,21 +69,30 @@ export default function Home() {
 	};
 
 	const executeScript = async (data: IForm) => {
-		const scriptResponse = await fetch('/api/script', {
-			method: 'POST',
-			body: JSON.stringify({
-				longitud: data.longitud,
-				latitud: data.latitud,
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-		if (!scriptResponse.ok) {
-			throw new Error(`Error: ${scriptResponse.status}`);
+		try {
+			const scriptResponse = await fetch('/api/script', {
+				method: 'POST',
+				body: JSON.stringify({
+					longitud: data.longitud,
+					latitud: data.latitud,
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			console.log('SCRIPT REPSONSE', scriptResponse);
+
+			if (!scriptResponse.ok) {
+				const errorMessage = await scriptResponse.json();
+				throw new Error(`Error: ${scriptResponse.status} - ${errorMessage.error}`);
+			}
+			console.log('peticion python');
+			return scriptResponse.json();
+		} catch (error: any) {
+			console.error('Error en el cliente:', error.message);
+			// Aquí puedes mostrar un mensaje de error al usuario si lo deseas
+			throw error;
 		}
-		console.log("peticion ´python");
-		return scriptResponse.json();
 	};
 
 	const sendDataRequest = async (data: IForm) => {
@@ -106,7 +115,7 @@ export default function Home() {
 					resultTemperaturePressure = await getTemperaturePressure(data);
 					scriptResult = await executeScript(data);
 					if (scriptResult.success) {
-						const lastRegister = scriptResult.ultimoResultado;
+						const lastRegister = scriptResult.resultado;
 						const currentData = resultTemperaturePressure.currentConditions;
 						const dataResponse = await fetch('/api/data', {
 							method: 'POST',
