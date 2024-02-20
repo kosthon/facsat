@@ -29,8 +29,18 @@ const initialValues: IForm = {
 	siteAcquisition: '',
 	samplePointId: '',
 	surveyId: '',
-	longitud: '',
-	latitud: '',
+
+	longitud: 0,
+	latitud: 0,
+
+	gradosLongitud: 0,
+	minutosLongitud: 0,
+	segundosLongitud: 0,
+
+	gradosLatitud: 0,
+	minutosLatitud: 0,
+	segundosLatitud: 0,
+
 	anguleSunpoint: '',
 	dateAcquisition: '',
 	captureMethod: '',
@@ -43,7 +53,27 @@ export default function Home() {
 	const [valuesForm, setValuesForm] = useState<IForm>(initialValues);
 	const [isCordenadas, setIsCordenadas] = useState(true);
 
+	const convertirSexagesimalADecimal = (grados: number, minutos: number, segundos: number) => {
+		const gradosValidos = grados !== undefined ? grados : 0;
+		const minutosValidos = minutos !== undefined ? minutos : 0;
+		const segundosValidos = segundos !== undefined ? segundos : 0;
+
+		const decimalMinutos = minutosValidos / 60;
+		const decimalSegundos = segundosValidos / 3600;
+
+		// Sumar los valores y aplicar toFixed solo si el resultado es un número
+		const resultado = gradosValidos + decimalMinutos + decimalSegundos;
+		
+		// Convertir a número y aplicar toFixed solo si es un número
+		const resultadoNumerico = typeof resultado === 'number' ? resultado : parseFloat(resultado);
+
+		// Aplicar toFixed solo si el resultadoNumerico es un número
+		return typeof resultadoNumerico === 'number' ? resultadoNumerico.toFixed(2) : resultadoNumerico;
+	};
+
 	const getTemperaturePressure = async (data: IForm) => {
+		console.log(data.longitud, data.latitud);
+		
 		try {
 			const response = await fetch(
 				`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${data.longitud},${data.latitud}?unitGroup=metric&key=${process.env.NEXT_PUBLIC_API_KEY_VISUALCROSSING}&include=current&elements=temp,pressure`,
@@ -105,6 +135,24 @@ export default function Home() {
 				surveyId = '002';
 			} else if (data.campaignName === 'Operation') {
 				surveyId = '003';
+			}
+
+			if (!isCordenadas) {
+				if (
+				  data.gradosLongitud !== undefined &&
+				  data.minutosLongitud !== undefined &&
+				  data.segundosLongitud !== undefined
+				) {
+				  	data.longitud = convertirSexagesimalADecimal(data.gradosLongitud, data.minutosLongitud, data.segundosLongitud);
+				}
+			  
+				if (
+				  data.gradosLatitud !== undefined &&
+				  data.minutosLatitud !== undefined &&
+				  data.segundosLatitud !== undefined
+				) {
+				  	data.latitud = convertirSexagesimalADecimal(data.gradosLatitud, data.minutosLatitud, data.segundosLatitud);
+				}
 			}
 
 			await toast.promise(
@@ -250,29 +298,6 @@ export default function Home() {
 							onBlur={formik.handleBlur}
 						/>
 
-						{/* <div>
-							<CustomInput
-								label="Longitud:"
-								value={formik.values.longitud}
-								name="longitud"
-								placeholder="-54.20"
-								messageError={formik.errors.longitud}
-								isRequired
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-							/>
-							<CustomInput
-								label="Latitud:"
-								value={formik.values.latitud}
-								name="latitud"
-								placeholder="40.94"
-								messageError={formik.errors.latitud}
-								isRequired
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-							/>
-						</div> */}
-
 						<Switch isSelected={isCordenadas} onValueChange={setIsCordenadas} className='mt-2'>
 							Tipo de formato de las cordenadas
 						</Switch>
@@ -316,30 +341,30 @@ export default function Home() {
 								<div className='grid gap-3 grid-cols-3'>
 									<CustomInput
 										label='Grados:'
-										value={formik.values.longitud}
-										name='longitud'
-										placeholder='-54.20'
-										messageError={formik.errors.longitud}
+										value={formik.values.gradosLongitud}
+										name='gradosLongitud'
+										placeholder='1'
+										messageError={formik.errors.gradosLongitud}
 										isRequired
 										onChange={formik.handleChange}
 										onBlur={formik.handleBlur}
 									/>
 									<CustomInput
 										label='Minutos:'
-										value={formik.values.latitud}
-										name='latitud'
-										placeholder='40.94'
-										messageError={formik.errors.latitud}
+										value={formik.values.minutosLongitud}
+										name='minutosLongitud'
+										placeholder='2'
+										messageError={formik.errors.minutosLongitud}
 										isRequired
 										onChange={formik.handleChange}
 										onBlur={formik.handleBlur}
 									/>
 									<CustomInput
 										label='Segundos:'
-										value={formik.values.latitud}
-										name='latitud'
-										placeholder='40.94'
-										messageError={formik.errors.latitud}
+										value={formik.values.segundosLongitud}
+										name='segundosLongitud'
+										placeholder='3'
+										messageError={formik.errors.segundosLongitud}
 										isRequired
 										onChange={formik.handleChange}
 										onBlur={formik.handleBlur}
@@ -349,30 +374,30 @@ export default function Home() {
 								<div className='grid gap-3 grid-cols-3'>
 									<CustomInput
 										label='Grados:'
-										value={formik.values.longitud}
-										name='longitud'
+										value={formik.values.gradosLatitud}
+										name='gradosLatitud'
 										placeholder='-54.20'
-										messageError={formik.errors.longitud}
+										messageError={formik.errors.gradosLatitud}
 										isRequired
 										onChange={formik.handleChange}
 										onBlur={formik.handleBlur}
 									/>
 									<CustomInput
 										label='Minutos:'
-										value={formik.values.latitud}
-										name='latitud'
+										value={formik.values.minutosLatitud}
+										name='minutosLatitud'
 										placeholder='40.94'
-										messageError={formik.errors.latitud}
+										messageError={formik.errors.minutosLatitud}
 										isRequired
 										onChange={formik.handleChange}
 										onBlur={formik.handleBlur}
 									/>
 									<CustomInput
 										label='Segundos:'
-										value={formik.values.latitud}
-										name='latitud'
+										value={formik.values.segundosLatitud}
+										name='segundosLatitud'
 										placeholder='40.94'
-										messageError={formik.errors.latitud}
+										messageError={formik.errors.segundosLatitud}
 										isRequired
 										onChange={formik.handleChange}
 										onBlur={formik.handleBlur}
