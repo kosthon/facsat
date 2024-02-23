@@ -348,7 +348,7 @@ export default function FormPage() {
 															<b>Second Derivative Mean Motion: </b>{selectedItem.TLE?.Second_Derivative_Mean_Motion}
 														</p>
 														<p className=" leading-none">
-															<b>Inclination: </b>{selectedItem.TLE?.Inclination}
+															<b>Inclinatio: </b>{selectedItem.TLE?.Inclination}
 														</p>
 													</div>
 													<div>
