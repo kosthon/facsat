@@ -54,26 +54,20 @@ export default function Home() {
 	const [isCordenadas, setIsCordenadas] = useState(true);
 
 	const convertirSexagesimalADecimal = (grados: number, minutos: number, segundos: number) => {
-		const gradosValidos = grados !== undefined ? grados : 0;
-		const minutosValidos = minutos !== undefined ? minutos : 0;
-		const segundosValidos = segundos !== undefined ? segundos : 0;
-
-		const decimalMinutos = minutosValidos / 60;
-		const decimalSegundos = segundosValidos / 3600;
-
-		// Sumar los valores y aplicar toFixed solo si el resultado es un número
-		const resultado = gradosValidos + decimalMinutos + decimalSegundos;
-		
-		// Convertir a número y aplicar toFixed solo si es un número
-		const resultadoNumerico = typeof resultado === 'number' ? resultado : parseFloat(resultado);
-
-		// Aplicar toFixed solo si el resultadoNumerico es un número
-		return typeof resultadoNumerico === 'number' ? resultadoNumerico.toFixed(2) : resultadoNumerico;
+		const gradosNumericos = typeof grados === 'number' ? grados : parseFloat(grados);
+		const minutosNumericos = typeof minutos === 'number' ? minutos : parseFloat(minutos);
+		const segundosNumericos = typeof segundos === 'number' ? segundos : parseFloat(segundos);
+	
+		const decimalMinutos = minutosNumericos / 60;
+		const decimalSegundos = segundosNumericos / 3600;
+	
+		const resultado = gradosNumericos + decimalMinutos + decimalSegundos;
+		const resultadoRedondeado = parseFloat(resultado.toFixed(2));
+	
+		return resultadoRedondeado;
 	};
-
+	
 	const getTemperaturePressure = async (data: IForm) => {
-		console.log(data.longitud, data.latitud);
-		
 		try {
 			const response = await fetch(
 				`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${data.longitud},${data.latitud}?unitGroup=metric&key=${process.env.NEXT_PUBLIC_API_KEY_VISUALCROSSING}&include=current&elements=temp,pressure`,

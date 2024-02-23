@@ -259,10 +259,10 @@ export default function FormPage() {
 										<div className="grid gap-4 grid-cols-2">
 											<div>
 												<small className="underline decoration-sky-500 leading-none">
-													Hora local:
+													Hora UTC:
 												</small>
 												<p className=" leading-none">
-													{selectedItem.localTime}
+													{selectedItem.utcTime}
 												</p>
 											</div>
 											<div className="grid gap-2 grid-cols-2">
@@ -276,10 +276,10 @@ export default function FormPage() {
 												</div>
 												<div>
 													<small className="underline decoration-sky-500 leading-none">
-														Hora UTC:
+														Hora local:
 													</small>
 													<p className=" leading-none">
-														{selectedItem.utcTime}
+														{selectedItem.localTime}
 													</p>
 												</div>
 											</div>
@@ -321,10 +321,57 @@ export default function FormPage() {
 													</p>
 												</div>
 											</div>
+										</div>
+										<div className="grid gap-4 grid-cols-1">
 											<div className="grid grid-cols-1">
 												<small className="underline decoration-sky-500 leading-none">
 													TLE:
 												</small>
+												<div className="grid grid-cols-2 gap-4">
+													<div>
+														<p className=" leading-none">
+															<b>Nora ID: </b>{selectedItem.TLE?.Norad_Id}
+														</p>
+														<p className=" leading-none">
+															<b>International Classification: </b>{selectedItem.TLE?.International_Classification}
+														</p>
+														<p className=" leading-none">
+															<b>International Designation: </b>{selectedItem.TLE?.International_Designation}
+														</p>
+														<p className=" leading-none">
+															<b>Epoch Time(ISO): </b>{selectedItem.TLE?.Epoch_Time}
+														</p>
+														<p className=" leading-none">
+															<b>First Derivative Mean Motion: </b>{selectedItem.TLE?.First_Derivative_Mean_Motion}
+														</p>
+														<p className=" leading-none">
+															<b>Second Derivative Mean Motion: </b>{selectedItem.TLE?.Second_Derivative_Mean_Motion}
+														</p>
+														<p className=" leading-none">
+															<b>Inclination: </b>{selectedItem.TLE?.Inclination}
+														</p>
+													</div>
+													<div>
+														<p className=" leading-none">
+															<b>Right Ascension of the Ascending Node: </b>{selectedItem.TLE?.Right_Ascension_of_the_Ascending_Node}
+														</p>
+														<p className=" leading-none">
+															<b>Eccentricity: </b>{selectedItem.TLE?.Eccentricity}
+														</p>
+														<p className=" leading-none">
+															<b>Argument of Perigee: </b>{selectedItem.TLE?.Argument_of_Perigee}
+														</p>
+														<p className=" leading-none">
+															<b>Mean Anomaly: </b>{selectedItem.TLE?.Mean_Anomaly}
+														</p>
+														<p className=" leading-none">
+															<b>Mean Motion: </b>{selectedItem.TLE?.Mean_Motion}
+														</p>
+														<p className=" leading-none">
+															<b>Revolution Number at Epoch: </b>{selectedItem.TLE?.Revolution_Number_at_Epoch}
+														</p>
+													</div>
+												</div>
 											</div>
 										</div>
 									</>
