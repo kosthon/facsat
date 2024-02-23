@@ -38,27 +38,70 @@ export const formValidationSchema = Yup.object().shape({
 		.min(-180, "La latitud no puede ser menor que -180")
 		.max(180, "La latitud no puede ser mayor que 180"),
 
-	// isCordenadas: Yup.boolean(),
+	
+	isCordenadas: Yup.boolean(),
 
-	// longitud: Yup.number().when("isCordenadas", {
-	// 	is: true,
-	// 	then: Yup.number()
-	// 		.typeError("El valor debe ser un número")
-	// 		.required("El campo longitud es requerido")
-	// 		.min(-90, "La longitud no puede ser menor que -90")
-	// 		.max(90, "La longitud no puede ser mayor que 90"),
-	// 	otherwise: Yup.number().notRequired(),
-	// }),
+	gradosLongitud: Yup.lazy((value) => {
+		return !value.isCordenadas ? 
+			Yup.number()
+				.typeError("El valor debe ser un número")
+				.required("El campo longitud es requerido")
+				.min(-90, "El valor no puede ser menor a -90")
+				.max(90, "El valor no puede ser mayor que 90")
+		  	: Yup.number().notRequired();
+	}),
 
-	// latitud: Yup.number().when("isCordenadas", {
-	// 	is: true,
-	// 	then: Yup.number()
-	// 		.typeError("El valor debe ser un número")
-	// 		.required("El campo latitud es requerido")
-	// 		.min(-180, "La latitud no puede ser menor que -180")
-	// 		.max(180, "La latitud no puede ser mayor que 180"),
-	// 	otherwise: Yup.number().notRequired(),
-	// }),
+	minutosLongitud: Yup.lazy((value) => {
+		return !value.isCordenadas ? 
+			Yup.number()
+				.typeError("El valor debe ser un número")
+				.required("El campo longitud es requerido")
+				.min(1, "El valor no puede ser menor a 0")
+				.max(59, "El valor no puede ser mayor que 59")
+			: Yup.number().notRequired();
+	}),
+
+	segundosLongitud: Yup.lazy((value) => {
+		return !value.isCordenadas ? 
+			Yup.number()
+				.typeError("El valor debe ser un número")
+				.required("El campo longitud es requerido")
+				.min(1, "El valor no puede ser menor a 0")
+				.max(59, "El valor no puede ser mayor que 59")
+		  	: Yup.number().notRequired();
+	}),
+
+
+
+	gradosLatitud: Yup.lazy((value) => {
+		return !value.isCordenadas ? 
+			Yup.number()
+				.typeError("El valor debe ser un número")
+				.required("El campo longitud es requerido")
+				.min(-180, "El valor no puede ser menor a -180")
+				.max(180, "El valor no puede ser mayor que 180")
+		  	: Yup.number().notRequired();
+	}),
+
+	minutosLatitud:  Yup.lazy((value) => {
+		return !value.isCordenadas ? 
+			Yup.number()
+				.typeError("El valor debe ser un número")
+				.required("El campo longitud es requerido")
+				.min(0, "El valor no puede ser menor a 0")
+				.max(59, "El valor no puede ser mayor que 59")
+		  	: Yup.number().notRequired();
+	}),
+
+	segundosLatitud: Yup.lazy((value) => {
+		return !value.isCordenadas ? 
+			Yup.number()
+				.typeError("El valor debe ser un número")
+				.required("El campo longitud es requerido")
+				.min(0, "El valor no puede ser menor a 0")
+				.max(59, "El valor no puede ser mayor que 59")
+		  	: Yup.number().notRequired();
+	}),
 
 	anguleSunpoint: Yup.string()
 		.required("El campo es requerido")
