@@ -11,14 +11,22 @@ export interface IForm {
 	siteAcquisition: string;
 	samplePointId: string;
 	surveyId: string;
-	longitud: string;
-	latitud: string;
+	longitud: number;
+	latitud: number;
 	anguleSunpoint: string;
 	dateAcquisition: string;
 	captureMethod: string;
 	parametersAcquisition: string;
 	operator: string;
 	owner: string;
+
+	gradosLongitud?: number;
+	minutosLongitud?: number;
+	segundosLongitud?: number;
+
+	gradosLatitud?: number;
+	minutosLatitud?: number;
+	segundosLatitud?: number;
 
 	// WEB SCRAPING
 	temperature?: string;
