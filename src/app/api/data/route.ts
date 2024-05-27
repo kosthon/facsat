@@ -11,15 +11,11 @@ export async function GET() {
 // rome-ignore lint/suspicious/noExplicitAny: <explanation>
 export async function POST(request: any) {
 	try {
+		connectDB();
 		const data = await request.json();
-		console.log("Data recibida:", data);
-
 		const newData = new Data(data);
-		console.log("Objeto Data creado:", newData);
-
+		console.log(data);
 		const savedData = await newData.save();
-		console.log("Datos guardados exitosamente:", savedData);
-
 		return NextResponse.json(savedData);
 		// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	} catch (error: any) {
@@ -49,8 +45,6 @@ export async function DELETE(request: any) {
 				{ status: 404 },
 			);
 		}
-
-		console.log("Datos eliminados exitosamente:", deletedData);
 		return NextResponse.json(deletedData);
 		// rome-ignore lint/suspicious/noExplicitAny: <explanation>
 	} catch (error: any) {

@@ -25,7 +25,7 @@ export const CustomInput = ({
 }: CustomInputProps) => {
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (onChange) {
-			onChange(e); // Llama a la función onChange si está definida
+			onChange(e);
 		}
 		if (onChangeText) {
 			onChangeText(e.target.value);

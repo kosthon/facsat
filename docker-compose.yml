@@ -1,0 +1,41 @@
+---
+name: 'facsat'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: facsat-web
+    hostname: facsat-web
+    depends_on:
+      - db
+    tty: true
+    ports:
+      - "${EXTERNAL_PORT_WEB}:3000"
+    networks:
+      - facsat-network
+    env_file: .env
+
+  db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${NEXT_PUBLIC_USER_DB}
+      MONGO_INITDB_ROOT_PASSWORD: ${NEXT_PUBLIC_PASS_DB}
+    ports:
+      - "${EXTERNAL_PORT_DB}:27017"
+    networks:
+      - facsat-network
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - "${EXTERNAL_PORT_ADMINER}:8080"
+    networks:
+      - facsat-network
+
+networks:
+  facsat-network:
